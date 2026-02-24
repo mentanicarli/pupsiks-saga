@@ -369,6 +369,7 @@
             transform: translateX(-50%);
             text-align: center;
             z-index: 5;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
         .fs-track-title {
             font-size: 22px; font-weight: 600; margin-bottom: 4px;
@@ -382,6 +383,7 @@
         .fs-header-buttons {
             position: absolute; top: 28px; right: 36px;
             display: flex; gap: 10px; z-index: 10;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
         .fs-header-btn {
             width: 40px; height: 40px;
@@ -418,33 +420,6 @@
             margin-left: 16px;
             padding-left: 16px;
             border-left: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* Адаптив для полноэкранного плеера */
-        @media (max-width: 900px) {
-            .fs-main-area {
-                padding: 80px 20px 240px;
-                flex-direction: column;
-            }
-            .fullscreen-player.lyrics-open .fs-cover-container {
-                transform: translateX(0);
-            }
-            .fs-cover {
-                width: 200px; height: 200px;
-            }
-            .fs-lyrics-panel {
-                position: fixed; top: 0; right: 0; bottom: 0; left: 0;
-                width: 100%; height: 100%;
-                border-radius: 0;
-                transform: translateX(100%);
-            }
-            .fullscreen-player.lyrics-open .fs-lyrics-panel {
-                transform: translateX(0);
-            }
-            .fs-track-info { top: 20px; }
-            .fs-track-title { font-size: 18px; }
-            .fs-header-buttons { top: 16px; right: 16px; }
-            .fs-controls { padding: 20px 24px 40px; }
         }
 
         /* Панель текста */
@@ -521,6 +496,369 @@
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+
+        /* ============================================
+           МОБИЛЬНАЯ АДАПТАЦИЯ (max-width: 768px)
+           ============================================ */
+        
+        @media (max-width: 768px) {
+            /* --- Шапка сайта --- */
+            header .max-w-6xl {
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            
+            header .text-lg {
+                font-size: 15px;
+                max-width: 180px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            /* --- Главная страница --- */
+            #page-home .max-w-6xl {
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-top: 24px;
+            }
+            
+            .hero-title {
+                font-size: clamp(2.2rem, 12vw, 4rem);
+                margin-bottom: 12px;
+            }
+            
+            #page-home .text-lg {
+                font-size: 15px;
+                line-height: 1.5;
+            }
+            
+            /* Сетка карточек */
+            #albums-grid,
+            #singles-grid {
+                gap: 16px;
+            }
+            
+            .release-card {
+                padding: 12px;
+            }
+            
+            /* --- Страница релиза --- */
+            #page-release .max-w-6xl {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            
+            #page-release .lg\:w-80 {
+                width: 100%;
+            }
+            
+            #release-title {
+                font-size: 24px;
+            }
+            
+            /* --- Страница чарта --- */
+            #page-chart .max-w-2xl {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            
+            .chart-row {
+                gap: 12px;
+                padding: 10px 0;
+            }
+            
+            .chart-num {
+                font-size: 16px;
+                width: 26px;
+            }
+            
+            .chart-cover {
+                width: 44px;
+                height: 44px;
+            }
+            
+            .chart-title {
+                font-size: 14px;
+            }
+            
+            .chart-plays {
+                display: none;
+            }
+            
+            /* --- Мини-плеер --- */
+            .player .px-6 {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            
+            .player .gap-4 {
+                gap: 8px;
+            }
+            
+            #player-cover {
+                width: 44px;
+                height: 44px;
+                flex-shrink: 0;
+            }
+            
+            #player-cover .cover-overlay {
+                opacity: 1;
+            }
+            
+            .fullscreen-trigger-btn {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .player .min-w-0 {
+                flex: 1;
+                min-width: 0;
+            }
+            
+            .player .min-w-0 > div {
+                min-width: 0;
+            }
+            
+            #player-track {
+                font-size: 13px;
+                max-width: 140px;
+            }
+            
+            .player .text-xs {
+                font-size: 11px;
+            }
+            
+            /* Скрываем кнопку текста в мини-плеере */
+            #lyrics-btn {
+                display: none !important;
+            }
+            
+            /* Кнопки управления */
+            .player .play-btn {
+                padding: 6px;
+            }
+            
+            .player .play-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+            
+            #play-pause-btn {
+                width: 36px;
+                height: 36px;
+            }
+            
+            #play-pause-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+            
+            /* --- Полноэкранный плеер --- */
+            .fs-main-area {
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 70px 20px 200px;
+                gap: 24px;
+            }
+            
+            .fullscreen-player.lyrics-open .fs-cover-container {
+                transform: translateX(0);
+            }
+            
+            .fs-cover {
+                width: 220px;
+                height: 220px;
+                max-width: 65vw;
+                max-height: 65vw;
+            }
+            
+            /* Информация о треке - скрывается при открытии текста */
+            .fs-track-info {
+                top: 16px;
+                left: 16px;
+                right: 16px;
+                transform: none;
+                text-align: left;
+            }
+            
+            .fullscreen-player.lyrics-open .fs-track-info {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+            
+            .fs-track-title {
+                font-size: 18px;
+            }
+            
+            .fs-track-artist {
+                font-size: 12px;
+            }
+            
+            /* Кнопки в шапке - скрываются при открытии текста */
+            .fs-header-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+            
+            .fullscreen-player.lyrics-open .fs-header-buttons {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+            
+            .fs-header-btn {
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
+            }
+            
+            .fs-header-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+            
+            /* Панель текста - на весь экран */
+            .fs-lyrics-panel {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                max-height: 100%;
+                border-radius: 0;
+                transform: translateY(100%);
+            }
+            
+            .fullscreen-player.lyrics-open .fs-lyrics-panel {
+                transform: translateY(0);
+            }
+            
+            .fs-lyrics-header {
+                padding: 16px;
+                padding-top: 20px;
+            }
+            
+            .fs-lyrics-body {
+                padding: 16px;
+                padding-bottom: 220px;
+            }
+            
+            .fs-lrc-line {
+                font-size: 16px;
+                padding: 8px 0;
+            }
+            
+            /* Контролы - фиксированная высота */
+            .fs-controls {
+                padding: 20px 20px 36px;
+            }
+            
+            .fs-progress-container {
+                height: 6px;
+                margin-bottom: 20px;
+            }
+            
+            .fs-controls-inner {
+                gap: 16px;
+                flex-wrap: nowrap;
+            }
+            
+            .fs-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+            
+            .fs-play-btn {
+                width: 52px;
+                height: 52px;
+            }
+            
+            .fs-play-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .fs-time {
+                font-size: 11px;
+                min-width: 70px;
+                order: -1;
+            }
+            
+            .fs-volume-wrap {
+                margin-left: 8px;
+                padding-left: 12px;
+            }
+            
+            .fs-volume-wrap .fs-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+            
+            #fs-volume-slider {
+                width: 60px;
+            }
+            
+            /* --- Панель текста (мини-плеер) --- */
+            .lyrics-panel {
+                width: 100%;
+            }
+            
+            #lyrics-content {
+                padding-bottom: 100px;
+            }
+            
+            .lrc-line {
+                font-size: 16px;
+                padding: 8px 0;
+            }
+        }
+
+        /* --- Очень маленькие экраны (max-width: 380px) --- */
+        @media (max-width: 380px) {
+            header .text-lg {
+                font-size: 14px;
+                max-width: 140px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            #player-track {
+                font-size: 12px;
+                max-width: 100px;
+            }
+            
+            .fs-cover {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .fs-track-title {
+                font-size: 16px;
+            }
+            
+            .fs-controls-inner {
+                gap: 12px;
+            }
+            
+            .fs-play-btn {
+                width: 48px;
+                height: 48px;
+            }
+            
+            .fs-time {
+                min-width: 60px;
+                font-size: 10px;
+            }
         }
     </style>
 </head>
@@ -1023,7 +1361,7 @@
             
             currentRelease = release;
             currentReleaseId = releaseId;
-            currentTrackIndex = -1; // СБРОС индекса для корректной работы handleTrackClick
+            currentTrackIndex = -1;
 
             const releaseCover = document.getElementById('release-cover');
             const releaseTitle = document.getElementById('release-title');
@@ -1086,7 +1424,6 @@
         // ============================================
 
         function handleTrackClick(index) {
-            // Проверяем, что это именно тот трек (сравниваем и релиз, и индекс)
             if (currentRelease && currentReleaseId && currentTrackIndex === index) {
                 togglePlay();
             } else {
