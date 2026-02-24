@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>frnk ness collection</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* --- Переменные дизайна --- */
         :root {
             --bg: #050505;
             --bg-elevated: #0a0a0a;
@@ -25,9 +23,7 @@
             --border: #1a1a1a;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Space Grotesk', sans-serif;
@@ -38,28 +34,15 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+        /* --- Скроллбар --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--bg-card); border-radius: 4px; border: 2px solid var(--bg); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--bg-card);
-            border-radius: 4px;
-            border: 2px solid var(--bg);
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent);
-        }
-
+        /* --- Анимация страниц --- */
         .page {
             opacity: 0;
             visibility: hidden;
@@ -69,7 +52,6 @@
             position: relative;
             z-index: 1;
         }
-
         .page.active {
             opacity: 1;
             visibility: visible;
@@ -78,30 +60,23 @@
         }
 
         #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
         }
 
+        /* --- Шапка сайта --- */
         header {
-            background: rgba(5, 5, 5, 0.8);
+            background: rgba(20, 20, 20, 0.5);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(12px);
         }
-
-        header .w-8 {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
+        header .w-8 { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         header button:hover .w-8 {
             transform: scale(1.1);
             box-shadow: 0 0 15px var(--accent-glow);
         }
 
+        /* --- Карточки релизов --- */
         .release-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             background: var(--bg-card);
@@ -109,44 +84,23 @@
             position: relative;
             overflow: hidden;
         }
-
         .release-card::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(212, 255, 0, 0.06), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1;
-            pointer-events: none;
+            opacity: 0; transition: opacity 0.3s; z-index: 1; pointer-events: none;
         }
-
-        .release-card:hover::before {
-            opacity: 1;
-        }
-
+        .release-card:hover::before { opacity: 1; }
         .release-card:hover {
             transform: translateY(-6px) scale(1.01);
             border-color: rgba(212, 255, 0, 0.2);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--accent-glow);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px var(--accent-glow);
         }
+        .release-card:active { transform: scale(0.98); }
+        .release-card:hover .card-image { filter: brightness(1.1) saturate(1.1); transform: scale(1.03); }
+        .card-image { transition: filter 0.4s ease, transform 0.4s ease; }
 
-        .release-card:active {
-            transform: scale(0.98);
-        }
-
-        .release-card:hover .card-image {
-            filter: brightness(1.1) saturate(1.1);
-            transform: scale(1.03);
-        }
-
-        .card-image {
-            transition: filter 0.4s ease, transform 0.4s ease;
-        }
-
+        /* --- Заголовок главной --- */
         .hero-title {
             font-family: 'Dancing Script', cursive;
             font-size: clamp(3rem, 8vw, 6rem);
@@ -156,409 +110,420 @@
         }
 
         @keyframes textRevealGlow {
-            0% {
-                opacity: 0;
-                transform: scale(0.9);
-                filter: blur(10px);
-                text-shadow: 0 0 20px var(--accent);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1);
-                filter: blur(0px);
-                text-shadow: 0 0 30px var(--accent-glow), 0 0 60px rgba(212, 255, 0, 0.2);
-            }
+            0% { opacity: 0; transform: scale(0.9); filter: blur(10px); text-shadow: 0 0 20px var(--accent); }
+            100% { opacity: 1; transform: scale(1); filter: blur(0px); text-shadow: 0 0 30px var(--accent-glow), 0 0 60px rgba(212, 255, 0, 0.2); }
         }
 
+        /* --- Строки треков --- */
         .track-row {
             transition: background-color 0.3s ease, transform 0.2s ease;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
             position: relative;
         }
-
-        .track-row:last-child {
-            border-bottom: none;
-        }
-
-        .track-row:hover {
-            background-color: rgba(255, 255, 255, 0.03);
-        }
-
-        .track-row:active {
-            transform: scale(0.99);
-        }
-
-        .track-row.playing {
-            background: linear-gradient(90deg, var(--accent-soft) 0%, transparent 100%);
-        }
-
+        .track-row:last-child { border-bottom: none; }
+        .track-row:hover { background-color: rgba(255,255,255,0.03); }
+        .track-row:active { transform: scale(0.99); }
+        .track-row.playing { background: linear-gradient(90deg, var(--accent-soft) 0%, transparent 100%); }
+        
         .track-row.playing::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+            background: var(--accent); box-shadow: 0 0 10px var(--accent);
             animation: active-track-line 1s ease-in-out infinite alternate;
+        }
+        
+        .track-row.playing.paused::before {
+            animation-play-state: paused;
         }
 
         @keyframes active-track-line {
-            from {
-                opacity: 0.5;
-                height: 40%;
-                top: 30%;
-            }
-
-            to {
-                opacity: 1;
-                height: 100%;
-                top: 0;
-            }
+            from { opacity: 0.5; height: 40%; top: 30%; }
+            to { opacity: 1; height: 100%; top: 0; }
         }
+        .track-row.playing .track-num { color: var(--accent); }
 
-        .track-row.playing .track-num {
-            color: var(--accent);
-        }
-
-        /* Плеер */
+        /* --- Плеер --- */
         .player {
             transform: translateY(100%);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             background: linear-gradient(to top, rgba(10, 10, 10, 0.98), rgba(10, 10, 10, 0.9));
             backdrop-filter: blur(30px);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 -15px 40px rgba(0,0,0,0.6);
         }
+        .player.visible { transform: translateY(0); }
 
-        .player.visible {
-            transform: translateY(0);
-        }
-
-        .progress-container {
-            position: relative;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            overflow: visible;
-            top: -2px;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--accent);
-            position: relative;
-            transition: width 0.1s linear;
-            box-shadow: 0 0 15px var(--accent-glow);
-            border-radius: 2px;
-        }
-
+        /* Прогресс бар */
+        .progress-container { position: relative; height: 5px; background: rgba(255,255,255,0.1); cursor: pointer; overflow: visible; top: -2px; }
+        .progress-bar { height: 100%; background: var(--accent); position: relative; transition: width 0.1s linear; box-shadow: 0 0 15px var(--accent-glow); border-radius: 2px; }
         .progress-bar::after {
-            content: '';
-            position: absolute;
-            right: -6px;
-            top: 50%;
-            transform: translateY(-50%) scale(0);
-            width: 12px;
-            height: 12px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent);
-            transition: transform 0.2s ease;
+            content: ''; position: absolute; right: -6px; top: 50%;
+            transform: translateY(-50%) scale(0); width: 12px; height: 12px;
+            background: #fff; border-radius: 50%; box-shadow: 0 0 10px var(--accent); transition: transform 0.2s ease;
         }
+        .progress-container:hover .progress-bar::after { transform: translateY(-50%) scale(1); }
 
-        .progress-container:hover .progress-bar::after {
-            transform: translateY(-50%) scale(1);
-        }
+        /* Кнопки управления */
+        #play-pause-btn { position: relative; z-index: 2; transition: transform 0.1s ease, background-color 0.2s ease; }
+        #play-pause-btn.playing-state { background: var(--fg); box-shadow: 0 0 0 0 var(--accent-glow); animation: pulse-glow 2s infinite; }
+        @keyframes pulse-glow { 0% { box-shadow: 0 0 0 0 var(--accent-glow); } 70% { box-shadow: 0 0 0 12px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+        #play-pause-btn:active { transform: scale(0.9) !important; }
 
-        #play-pause-btn {
-            position: relative;
-            z-index: 2;
-            transition: transform 0.1s ease, background-color 0.2s ease;
-        }
+        #icon-play, #icon-pause { transition: opacity 0.2s ease, transform 0.2s ease; }
+        #icon-play.hidden { opacity: 0; transform: rotate(90deg) scale(0.5); position: absolute; }
+        #icon-pause.hidden { opacity: 0; transform: scale(0.5); position: absolute; }
 
-        #play-pause-btn.playing-state {
-            background: var(--fg);
-            box-shadow: 0 0 0 0 var(--accent-glow);
-            animation: pulse-glow 2s infinite;
-        }
-
-        @keyframes pulse-glow {
-            0% {
-                box-shadow: 0 0 0 0 var(--accent-glow);
-            }
-
-            70% {
-                box-shadow: 0 0 0 12px transparent;
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 transparent;
-            }
-        }
-
-        #play-pause-btn:active {
-            transform: scale(0.9) !important;
-        }
-
-        #icon-play,
-        #icon-pause {
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
-
-        #icon-play.hidden {
-            opacity: 0;
-            transform: rotate(90deg) scale(0.5);
-            position: absolute;
-        }
-
-        #icon-pause.hidden {
-            opacity: 0;
-            transform: scale(0.5);
-            position: absolute;
-        }
-
+        /* Кнопка текста */
         .lyrics-action-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--fg-muted);
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px;
+            background: transparent; border: 1px solid var(--border); color: var(--fg-muted);
+            font-size: 12px; font-weight: 500; transition: all 0.3s ease;
+        }
+        .lyrics-action-btn:hover {
+            background: var(--accent-soft); border-color: var(--accent); color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-soft); transform: translateY(-1px);
+        }
+        .lyrics-action-btn:active { transform: scale(0.95); }
+
+        /* Свечение обложки */
+        #player-cover { position: relative; cursor: pointer; }
+        #player-cover.playing-glow::after {
+            content: ''; position: absolute; inset: -5px; border-radius: 10px;
+            background: var(--accent); filter: blur(15px); opacity: 0.3; z-index: -1;
+            animation: cover-pulse 3s infinite ease-in-out;
+        }
+        @keyframes cover-pulse { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.05); } }
+
+        /* Кнопка полноэкранного режима на мини-обложке */
+        .cover-overlay {
+            position: absolute; inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+            border-radius: inherit;
+        }
+        #player-cover:hover .cover-overlay { opacity: 1; }
+        
+        .fullscreen-trigger-btn {
+            width: 32px; height: 32px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+        .fullscreen-trigger-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+            transform: scale(1.1);
         }
 
-        .lyrics-action-btn:hover {
+        /* --- Полноэкранный плеер --- */
+        .fullscreen-player {
+            position: fixed; inset: 0; z-index: 100;
+            background: linear-gradient(160deg, #0a0a0a 0%, #050505 50%, #080808 100%);
+            display: flex; flex-direction: column;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            overflow: hidden;
+        }
+        .fullscreen-player.open { opacity: 1; visibility: visible; }
+        
+        /* Фоновое размытие обложки */
+        .fullscreen-bg {
+            position: absolute; inset: -50px;
+            background-size: cover; background-position: center;
+            filter: blur(80px) saturate(0.5);
+            opacity: 0.4; transform: scale(1.2);
+            transition: background-image 0.5s ease;
+            z-index: 0;
+        }
+        
+        .fullscreen-bg::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to bottom, rgba(5,5,5,0.3) 0%, rgba(5,5,5,0.9) 100%);
+        }
+        
+        /* Основная область контента */
+        .fs-main-area {
+            flex: 1;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 1;
+            padding: 100px 40px 220px;
+        }
+        
+        /* Контейнер обложки */
+        .fs-cover-container {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fullscreen-player.lyrics-open .fs-cover-container {
+            transform: translateX(-220px);
+        }
+        
+        .fs-cover {
+            width: 280px; height: 280px;
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(212, 255, 0, 0.1);
+            position: relative;
+        }
+        .fs-cover img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 8s ease;
+        }
+        .fs-cover.playing img {
+            animation: cover-zoom 20s ease-in-out infinite alternate;
+        }
+        @keyframes cover-zoom {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+        
+        /* Панель текста в полноэкранном режиме */
+        .fs-lyrics-panel {
+            position: absolute; right: 40px; top: 80px; bottom: 200px;
+            width: 360px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            display: flex; flex-direction: column;
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        opacity 0.4s ease, visibility 0.4s ease;
+            backdrop-filter: blur(10px);
+            z-index: 2;
+            transform: translateX(50px);
+        }
+        .fullscreen-player.lyrics-open .fs-lyrics-panel {
+            transform: translateX(0);
+            opacity: 1; visibility: visible; pointer-events: auto;
+        }
+        
+        .fs-lyrics-header {
+            padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .fs-lyrics-body {
+            flex: 1; overflow-y: auto; padding: 16px 20px;
+        }
+        
+        /* Элементы управления в полноэкранном режиме */
+        .fs-controls {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 30px 50px 50px;
+            background: linear-gradient(to top, rgba(5,5,5,0.98) 0%, rgba(5,5,5,0.8) 60%, transparent 100%);
+            z-index: 10;
+        }
+        
+        .fs-progress-container {
+            height: 5px; background: rgba(255,255,255,0.15);
+            border-radius: 3px; cursor: pointer; margin-bottom: 24px;
+            position: relative;
+        }
+        .fs-progress-bar {
+            height: 100%; background: var(--accent);
+            border-radius: 3px; position: relative;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transition: width 0.1s linear;
+        }
+        .fs-progress-container:hover .fs-progress-bar {
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+        
+        .fs-controls-inner {
+            display: flex; align-items: center; justify-content: center;
+            gap: 20px;
+        }
+        
+        /* Кнопки в полноэкранном режиме */
+        .fs-btn {
+            display: flex; align-items: center; justify-content: center;
+            background: transparent; border: none; color: var(--fg-muted);
+            transition: all 0.2s ease; cursor: pointer;
+        }
+        .fs-btn:hover { color: var(--fg); transform: scale(1.1); }
+        .fs-btn:active { transform: scale(0.95); }
+        
+        .fs-play-btn {
+            width: 56px; height: 56px;
+            background: var(--fg); color: var(--bg);
+            border-radius: 50%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+        .fs-play-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+        }
+        .fs-play-btn.playing {
+            background: var(--accent);
+            box-shadow: 0 0 40px var(--accent-glow);
+        }
+        
+        /* Информация о треке */
+        .fs-track-info {
+            position: absolute; top: 32px; left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 5;
+        }
+        .fs-track-title {
+            font-size: 22px; font-weight: 600; margin-bottom: 4px;
+        }
+        .fs-track-artist {
+            font-size: 13px; color: var(--accent);
+            text-transform: lowercase; letter-spacing: 0.05em;
+        }
+        
+        /* Кнопки в шапке полноэкранного плеера */
+        .fs-header-buttons {
+            position: absolute; top: 28px; right: 36px;
+            display: flex; gap: 10px; z-index: 10;
+        }
+        .fs-header-btn {
+            width: 40px; height: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--fg-muted);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .fs-header-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--fg);
+        }
+        .fs-header-btn.active {
             background: var(--accent-soft);
             border-color: var(--accent);
             color: var(--accent);
-            box-shadow: 0 0 15px var(--accent-soft);
-            transform: translateY(-1px);
+        }
+        
+        /* Время в полноэкранном режиме */
+        .fs-time {
+            display: flex; align-items: center; gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px; color: var(--fg-muted);
+            min-width: 90px;
+        }
+        .fs-time span:first-child { color: var(--fg); }
+
+        /* Громкость в полноэкранном режиме */
+        .fs-volume-wrap {
+            display: flex; align-items: center; gap: 8px;
+            margin-left: 16px;
+            padding-left: 16px;
+            border-left: 1px solid rgba(255,255,255,0.1);
         }
 
-        .lyrics-action-btn:active {
-            transform: scale(0.95);
-        }
-
-        #player-cover {
-            position: relative;
-        }
-
-        #player-cover.playing-glow::after {
-            content: '';
-            position: absolute;
-            inset: -5px;
-            border-radius: 10px;
-            background: var(--accent);
-            filter: blur(15px);
-            opacity: 0.3;
-            z-index: -1;
-            animation: cover-pulse 3s infinite ease-in-out;
-        }
-
-        @keyframes cover-pulse {
-
-            0%,
-            100% {
-                opacity: 0.2;
-                transform: scale(1);
+        /* Адаптив для полноэкранного плеера */
+        @media (max-width: 900px) {
+            .fs-main-area {
+                padding: 80px 20px 240px;
+                flex-direction: column;
             }
-
-            50% {
-                opacity: 0.4;
-                transform: scale(1.05);
+            .fullscreen-player.lyrics-open .fs-cover-container {
+                transform: translateX(0);
             }
+            .fs-cover {
+                width: 200px; height: 200px;
+            }
+            .fs-lyrics-panel {
+                position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+                width: 100%; height: 100%;
+                border-radius: 0;
+                transform: translateX(100%);
+            }
+            .fullscreen-player.lyrics-open .fs-lyrics-panel {
+                transform: translateX(0);
+            }
+            .fs-track-info { top: 20px; }
+            .fs-track-title { font-size: 18px; }
+            .fs-header-buttons { top: 16px; right: 16px; }
+            .fs-controls { padding: 20px 24px 40px; }
         }
 
+        /* Панель текста */
         .lyrics-panel {
             transform: translateX(100%);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             background: linear-gradient(to left, #0a0a0a 0%, #111111 100%);
-            border-left: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
+            border-left: 1px solid rgba(255,255,255,0.05);
+            box-shadow: -20px 0 60px rgba(0,0,0,0.5);
         }
+        .lyrics-panel.open { transform: translateX(0); }
 
-        .lyrics-panel.open {
-            transform: translateX(0);
-        }
-
-        /* Стили караоке */
-        #lyrics-content {
-            scroll-behavior: smooth;
-        }
-
+        /* --- Стили караоке --- */
+        #lyrics-content, .fs-lyrics-body { scroll-behavior: smooth; }
         .lrc-line {
-            padding: 10px 0;
-            margin-bottom: 8px;
-            font-size: 18px;
-            line-height: 1.6;
-            color: var(--fg-muted);
-            opacity: 0.6;
-            transform: scale(1.0);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border-left: 3px solid transparent;
-            padding-left: 12px;
-            margin-left: -12px;
+            padding: 10px 0; margin-bottom: 8px; font-size: 18px; line-height: 1.6;
+            color: var(--fg-muted); opacity: 0.6; transform: scale(1.0); transition: all 0.3s ease;
+            cursor: pointer; border-left: 3px solid transparent; padding-left: 12px; margin-left: -12px;
         }
-
-        .lrc-line:hover {
-            opacity: 0.9;
-            color: var(--fg);
-        }
-
+        .lrc-line:hover { opacity: 0.9; color: var(--fg); }
         .lrc-line.active {
-            opacity: 1;
-            color: var(--accent);
-            transform: scale(1.05);
-            text-shadow: 0 0 15px var(--accent-glow);
-            font-weight: 600;
-            margin-left: 0;
-            border-left: 3px solid var(--accent);
+            opacity: 1; color: var(--accent); transform: scale(1.05);
+            text-shadow: 0 0 15px var(--accent-glow); font-weight: 600;
+            margin-left: 0; border-left: 3px solid var(--accent);
+        }
+        
+        /* Стили караоке для полноэкранного режима */
+        .fs-lrc-line {
+            padding: 10px 0; margin-bottom: 6px; font-size: 17px; line-height: 1.6;
+            color: var(--fg-muted); opacity: 0.5; transition: all 0.3s ease;
+            cursor: pointer; border-left: 3px solid transparent; padding-left: 14px; margin-left: -14px;
+        }
+        .fs-lrc-line:hover { opacity: 0.8; color: var(--fg); }
+        .fs-lrc-line.active {
+            opacity: 1; color: var(--accent); transform: scale(1.02);
+            font-weight: 600; border-left: 3px solid var(--accent);
         }
 
-        /* Стили страницы Чарт */
+        /* --- Стили страницы Чарт --- */
         .chart-row {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 12px 4px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: background 0.2s;
+            display: flex; align-items: center; gap: 16px; padding: 12px 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;
         }
-
-        .chart-row:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .chart-row:last-child {
-            border-bottom: none;
-        }
-
+        .chart-row:hover { background: rgba(255,255,255,0.02); }
+        .chart-row:last-child { border-bottom: none; }
         .chart-num {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--fg-muted);
-            width: 30px;
-            text-align: center;
-            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px; font-weight: 700; color: var(--fg-muted);
+            width: 30px; text-align: center; font-family: 'JetBrains Mono', monospace;
         }
+        .chart-num.top-3 { color: var(--accent); }
+        .chart-cover { width: 48px; height: 48px; border-radius: 6px; background: var(--bg-card); overflow: hidden; flex-shrink: 0; }
+        .chart-cover img { width: 100%; height: 100%; object-fit: cover; }
+        .chart-info { flex: 1; min-width: 0; }
+        .chart-title { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chart-artist { font-size: 12px; color: var(--fg-muted); }
+        .chart-plays { font-size: 12px; color: var(--fg-muted); display: flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; }
 
-        .chart-num.top-3 {
-            color: var(--accent);
-            text-shadow: 0 0 10px var(--accent-glow);
-        }
+        /* Анимации появления */
+        .stagger-item { opacity: 0; transform: translateY(20px); }
+        .stagger-item.visible { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-        .chart-cover {
-            width: 48px;
-            height: 48px;
-            border-radius: 6px;
-            background: var(--bg-card);
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .chart-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .chart-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .chart-title {
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .chart-artist {
-            font-size: 12px;
-            color: var(--fg-muted);
-        }
-
-        .chart-plays {
-            font-size: 12px;
-            color: var(--fg-muted);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .stagger-item {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .stagger-item.visible {
-            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            background: transparent;
-            cursor: pointer;
-            width: 80px;
-        }
-
-        input[type="range"]::-webkit-slider-runnable-track {
-            background: rgba(255, 255, 255, 0.1);
-            height: 4px;
-            border-radius: 2px;
-        }
-
+        /* --- Слайдер громкости --- */
+        input[type="range"] { -webkit-appearance: none; background: transparent; cursor: pointer; width: 80px; }
+        input[type="range"]::-webkit-slider-runnable-track { background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; }
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            margin-top: -4px;
-            background-color: #fff;
-            height: 10px;
-            width: 10px;
-            border-radius: 50%;
-            box-shadow: 0 0 5px var(--accent);
-            transition: all 0.2s;
+            -webkit-appearance: none; margin-top: -4px; background-color: #fff;
+            height: 10px; width: 10px; border-radius: 50%;
+            box-shadow: 0 0 5px var(--accent); transition: all 0.2s;
         }
+        input[type="range"]:hover::-webkit-slider-thumb { background-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
 
-        input[type="range"]:hover::-webkit-slider-thumb {
-            background-color: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
-        }
-
-        button:focus-visible,
-        a:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
+        button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
         @media (prefers-reduced-motion: reduce) {
-
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
         }
     </style>
 </head>
-
 <body>
     <div id="particles-js"></div>
 
@@ -569,16 +534,11 @@
                 <div class="w-8 h-8 rounded bg-[var(--accent)] flex items-center justify-center">
                     <span class="font-bold text-sm text-[var(--bg)]">4L</span>
                 </div>
-                <span
-                    class="text-lg font-medium tracking-tight text-white/90 group-hover:text-white transition-colors">frnk
-                    ness collection</span>
+                <span class="text-lg font-medium tracking-tight text-white/90 group-hover:text-white transition-colors">frnk ness collection</span>
             </button>
-
-            <!-- Навигация (справа) -->
+            
             <nav class="hidden sm:flex items-center gap-4 text-sm text-[var(--fg-muted)]">
-                <!-- Кнопка Чарт (перенесена сюда, цвет как у PUPSIK4LIFE) -->
-                <button onclick="showPage('chart')"
-                    class="flex items-center gap-2 px-5 py-2 text-sm tracking-widest uppercase text-[var(--fg-muted)] border border-[var(--border)] rounded-full hover:text-[var(--fg)] hover:border-[var(--fg-muted)] transition-all duration-300">
+                <button onclick="showPage('chart')" class="flex items-center gap-2 px-5 py-2 text-sm tracking-widest uppercase text-[var(--fg-muted)] border border-[var(--border)] rounded-full hover:text-[var(--fg)] hover:border-[var(--fg-muted)] transition-all duration-300">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="18" y1="20" x2="18" y2="10"></line>
                         <line x1="12" y1="20" x2="12" y2="4"></line>
@@ -586,21 +546,19 @@
                     </svg>
                     <span>Чарт</span>
                 </button>
-
                 <span class="text-xs tracking-widest uppercase">PUPSIK4LIFE</span>
             </nav>
         </div>
     </header>
 
     <main class="pt-20 pb-32 min-h-screen relative z-10">
-
+        
         <!-- ГЛАВНАЯ СТРАНИЦА -->
         <div id="page-home" class="page active">
             <div class="max-w-6xl mx-auto px-6 py-12">
                 <section class="mb-20 stagger-item">
                     <h1 class="hero-title mb-6">Pupsiks Saga</h1>
-                    <p class="text-[var(--fg-muted)] text-lg max-w-xl leading-relaxed">Полная коллекция релизов frnk
-                        ness про компанию Пупсиков. Альбомы, синглы и тексты песен в одном месте.</p>
+                    <p class="text-[var(--fg-muted)] text-lg max-w-xl leading-relaxed">Полная коллекция релизов frnk ness про компанию Пупсиков. Альбомы, синглы и тексты песен в одном месте.</p>
                 </section>
 
                 <section class="mb-16 stagger-item" style="animation-delay: 0.1s;">
@@ -618,22 +576,14 @@
         <!-- СТРАНИЦА ЧАРТА -->
         <div id="page-chart" class="page">
             <div class="max-w-2xl mx-auto px-6 py-8">
-
-                <!-- Кнопка Назад -->
-                <button onclick="showPage('home')"
-                    class="flex items-center gap-2 text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors mb-12 group">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        class="group-hover:-translate-x-1 transition-transform">
-                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                    </svg>
+                <button onclick="showPage('home')" class="flex items-center gap-2 text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors mb-12 group">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="group-hover:-translate-x-1 transition-transform"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                     <span class="text-sm">Назад</span>
                 </button>
-
                 <div class="text-center mb-12">
-                    <h1 class="text-3xl font-bold mb-2 tracking-tight">Чарт песен</h1>
-                    <p class="text-sm text-[var(--fg-muted)]">Рейтинг формируется на основе кол-ва прослушиваний</p>
+                    <h1 class="text-3xl font-bold mb-2 tracking-tight">Чарт Песен</h1>
+                    <p class="text-sm text-[var(--fg-muted)]">Рейтинг формируется на основе количества прослушиваний</p>
                 </div>
-
                 <div id="chart-list" class="space-y-2"></div>
             </div>
         </div>
@@ -641,33 +591,24 @@
         <!-- СТРАНИЦА РЕЛИЗА -->
         <div id="page-release" class="page">
             <div class="max-w-6xl mx-auto px-6 py-8">
-                <button onclick="showPage('home')"
-                    class="flex items-center gap-2 text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors mb-12 group">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        class="group-hover:-translate-x-1 transition-transform">
-                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                    </svg>
+                <button onclick="showPage('home')" class="flex items-center gap-2 text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors mb-12 group">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="group-hover:-translate-x-1 transition-transform"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                     <span class="text-sm">Назад</span>
                 </button>
 
                 <div class="flex flex-col lg:flex-row gap-8 lg:gap-16">
                     <div class="lg:w-80 flex-shrink-0">
-                        <div id="release-cover"
-                            class="aspect-square rounded-xl overflow-hidden bg-[var(--bg-card)] mb-6 shadow-2xl shadow-black/80">
-                        </div>
+                        <div id="release-cover" class="aspect-square rounded-xl overflow-hidden bg-[var(--bg-card)] mb-6 shadow-2xl shadow-black/80"></div>
                         <h1 id="release-title" class="text-3xl font-bold mb-2 tracking-tight leading-tight"></h1>
-                        <p id="release-artist"
-                            class="text-[var(--accent)] text-sm font-medium mb-4 tracking-wide lowercase">frnk ness</p>
+                        <p id="release-artist" class="text-[var(--accent)] text-sm font-medium mb-4 tracking-wide lowercase">frnk ness</p>
                         <p id="release-meta" class="text-sm text-[var(--fg-muted)] tracking-wide"></p>
-
+                        
                         <div id="download-container" class="mt-6 hidden">
-                            <a id="download-lyrics-btn" href="#" download
-                                class="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-[var(--accent)] hover:text-black hover:bg-[var(--accent)] border border-[var(--accent)]/40 rounded-full px-5 py-2.5 transition-all duration-300 group">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" class="group-hover:translate-y-0.5 transition-transform">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                    <polyline points="7 10 12 15 17 10" />
-                                    <line x1="12" y1="15" x2="12" y2="3" />
+                            <a id="download-lyrics-btn" href="#" download class="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-[var(--accent)] hover:text-black hover:bg-[var(--accent)] border border-[var(--accent)]/40 rounded-full px-5 py-2.5 transition-all duration-300 group">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="group-hover:translate-y-0.5 transition-transform">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
                                 </svg>
                                 <span>Lyrics Book</span>
                             </a>
@@ -680,13 +621,8 @@
                                 <h3 class="text-xs tracking-[0.2em] uppercase text-[var(--fg-muted)]">Видео</h3>
                                 <div class="flex-1 h-px bg-[var(--border)]"></div>
                             </div>
-                            <div
-                                class="aspect-video rounded-xl overflow-hidden bg-[var(--bg-card)] shadow-lg border border-white/5">
-                                <iframe id="video-iframe" class="w-full h-full" src=""
-                                    referrerpolicy="strict-origin-when-cross-origin" title="YouTube video player"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                    allowfullscreen></iframe>
+                            <div class="aspect-video rounded-xl overflow-hidden bg-[var(--bg-card)] shadow-lg border border-white/5">
+                                <iframe id="video-iframe" class="w-full h-full" src="" referrerpolicy="strict-origin-when-cross-origin" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                             </div>
                         </div>
 
@@ -702,23 +638,111 @@
     </main>
 
     <!-- Панель с текстом песни (Караоке) -->
-    <div id="lyrics-panel"
-        class="lyrics-panel fixed top-0 right-0 w-full sm:w-[400px] h-full bg-[var(--bg-elevated)] z-50 overflow-hidden flex flex-col">
+    <div id="lyrics-panel" class="lyrics-panel fixed top-0 right-0 w-full sm:w-[400px] h-full bg-[var(--bg-elevated)] z-50 overflow-hidden flex flex-col">
         <div class="p-6 border-b border-white/5 flex items-center justify-between flex-shrink-0">
             <div>
                 <h4 id="lyrics-track-title" class="font-semibold text-lg"></h4>
                 <p class="text-sm text-[var(--fg-muted)]">frnk ness</p>
             </div>
-            <button onclick="closeLyrics()"
-                class="flex items-center justify-center w-8 h-8 bg-white/5 hover:bg-white/10 rounded-full text-sm transition-colors"
-                aria-label="Закрыть текст">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
+            <button onclick="closeLyrics()" class="flex items-center justify-center w-8 h-8 bg-white/5 hover:bg-white/10 rounded-full text-sm transition-colors" aria-label="Закрыть текст">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </button>
         </div>
         <div id="lyrics-content" class="flex-1 overflow-y-auto p-6 text-base leading-loose text-[var(--fg-muted)]">
             <p class="italic">Текст загружается...</p>
+        </div>
+    </div>
+
+    <!-- Полноэкранный плеер -->
+    <div id="fullscreen-player" class="fullscreen-player">
+        <div id="fs-bg" class="fullscreen-bg"></div>
+        
+        <!-- Информация о треке -->
+        <div class="fs-track-info">
+            <h2 id="fs-track-title" class="fs-track-title">Название трека</h2>
+            <p class="fs-track-artist">frnk ness</p>
+        </div>
+        
+        <!-- Кнопки в шапке -->
+        <div class="fs-header-buttons">
+            <button id="fs-lyrics-toggle" onclick="toggleFsLyrics()" class="fs-header-btn" aria-label="Текст песни">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+            </button>
+            <button onclick="closeFullscreenPlayer()" class="fs-header-btn" aria-label="Закрыть">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Основная область контента -->
+        <div class="fs-main-area">
+            <!-- Обложка -->
+            <div class="fs-cover-container">
+                <div id="fs-cover" class="fs-cover">
+                    <img id="fs-cover-img" src="" alt="Обложка">
+                </div>
+            </div>
+            
+            <!-- Панель текста -->
+            <div class="fs-lyrics-panel">
+                <div class="fs-lyrics-header">
+                    <div>
+                        <h4 id="fs-lyrics-title" class="font-semibold text-sm">Текст песни</h4>
+                        <p class="text-xs text-[var(--fg-muted)]">frnk ness</p>
+                    </div>
+                    <button onclick="toggleFsLyrics()" class="w-7 h-7 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div id="fs-lyrics-body" class="fs-lyrics-body">
+                    <p class="text-[var(--fg-muted)] italic">Текст загружается...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Элементы управления -->
+        <div class="fs-controls">
+            <div class="fs-progress-container" onclick="seekTrackFs(event)">
+                <div id="fs-progress-bar" class="fs-progress-bar" style="width: 0%"></div>
+            </div>
+            
+            <div class="fs-controls-inner">
+                <div class="fs-time">
+                    <span id="fs-time-current">0:00</span>
+                    <span>/</span>
+                    <span id="fs-time-total">0:00</span>
+                </div>
+                
+                <button onclick="prevTrack()" class="fs-btn" aria-label="Предыдущий трек">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+                
+                <button id="fs-play-btn" onclick="togglePlay()" class="fs-btn fs-play-btn" aria-label="Воспроизвести">
+                    <svg id="fs-icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <svg id="fs-icon-pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                </button>
+                
+                <button onclick="nextTrack()" class="fs-btn" aria-label="Следующий трек">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+                
+                <div class="fs-volume-wrap">
+                    <button onclick="toggleMute()" class="fs-btn" aria-label="Громкость">
+                        <svg id="fs-volume-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                            <path id="fs-vol-wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                            <path id="fs-vol-wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                        </svg>
+                    </button>
+                    <input type="range" id="fs-volume-slider" min="0" max="1" step="0.01" value="1" class="w-20">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -728,25 +752,30 @@
             <div class="progress-container rounded-none" onclick="seekTrack(event)">
                 <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
             </div>
-
+            
             <div class="px-6 py-3 flex items-center gap-4">
                 <div class="flex items-center gap-4 flex-1 min-w-0">
-                    <div id="player-cover"
-                        class="w-12 h-12 rounded bg-[var(--bg-card)] flex-shrink-0 overflow-hidden shadow-lg"></div>
+                    <div id="player-cover" class="w-12 h-12 rounded bg-[var(--bg-card)] flex-shrink-0 overflow-hidden shadow-lg">
+                        <div class="cover-overlay">
+                            <button onclick="event.stopPropagation(); openFullscreenPlayer()" class="fullscreen-trigger-btn" aria-label="Открыть на весь экран">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
                     <div class="min-w-0 flex items-center gap-4">
                         <div>
                             <p id="player-track" class="font-medium truncate text-sm"></p>
                             <p class="text-xs text-[var(--fg-muted)] truncate">frnk ness</p>
                         </div>
-
-                        <button id="lyrics-btn" onclick="toggleLyrics()" class="lyrics-action-btn hidden sm:flex"
-                            aria-label="Открыть текст песни">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                <polyline points="14 2 14 8 20 8" />
-                                <line x1="16" y1="13" x2="8" y2="13" />
-                                <line x1="16" y1="17" x2="8" y2="17" />
+                        
+                        <button id="lyrics-btn" onclick="toggleLyrics()" class="lyrics-action-btn hidden sm:flex" aria-label="Открыть текст песни">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
                             </svg>
                             <span>Текст</span>
                         </button>
@@ -755,30 +784,15 @@
 
                 <!-- Управление воспроизведением -->
                 <div class="flex items-center gap-2">
-                    <button onclick="prevTrack()"
-                        class="play-btn p-2 text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors"
-                        aria-label="Предыдущий трек">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
-                        </svg>
+                    <button onclick="prevTrack()" class="play-btn p-2 text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors" aria-label="Предыдущий трек">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
                     </button>
-                    <button id="play-pause-btn" onclick="togglePlay()"
-                        class="play-btn w-10 h-10 rounded-full bg-white text-black flex items-center justify-center relative"
-                        aria-label="Воспроизвести">
-                        <svg id="icon-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                        <svg id="icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
-                            class="hidden">
-                            <path d="M6 4h4v16H6zM14 4h4v16h-4z" />
-                        </svg>
+                    <button id="play-pause-btn" onclick="togglePlay()" class="play-btn w-10 h-10 rounded-full bg-white text-black flex items-center justify-center relative" aria-label="Воспроизвести">
+                        <svg id="icon-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        <svg id="icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="hidden"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
                     </button>
-                    <button onclick="nextTrack()"
-                        class="play-btn p-2 text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors"
-                        aria-label="Следующий трек">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
-                        </svg>
+                    <button onclick="nextTrack()" class="play-btn p-2 text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors" aria-label="Следующий трек">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                     </button>
                 </div>
 
@@ -791,12 +805,9 @@
                     </div>
 
                     <div class="flex items-center gap-2 pl-4 border-l border-white/10">
-                        <button onclick="toggleMute()"
-                            class="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors"
-                            aria-label="Громкость">
-                            <svg id="volume-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                        <button onclick="toggleMute()" class="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors" aria-label="Громкость">
+                            <svg id="volume-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
                                 <path id="vol-wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
                                 <path id="vol-wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
                             </svg>
@@ -805,13 +816,8 @@
                     </div>
                 </div>
 
-                <button id="lyrics-btn-mobile" onclick="toggleLyrics()"
-                    class="sm:hidden p-2 text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors"
-                    aria-label="Текст песни">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                    </svg>
+                <button id="lyrics-btn-mobile" onclick="toggleLyrics()" class="sm:hidden p-2 text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors" aria-label="Текст песни">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 </button>
             </div>
         </div>
@@ -823,16 +829,11 @@
         // ============================================
         // ДАННЫЕ РЕЛИЗОВ
         // ============================================
-
+        
         const releases = {
             'most-venture-poopsicks': {
-                type: 'album',
-                title: 'Most Venture Poopsicks / Last Over V',
-                year: '2025',
-                cover: 'images/album1-cover.jpg',
-                audioPath: 'audio/album1/',
-                lyricsPath: 'lyrics/album1/',
-                lyricsBookPath: 'lyrics-books/album1-lyrics.pdf',
+                type: 'album', title: 'Most Venture Poopsicks / Last Over V', year: '2025', cover: 'images/album1-cover.jpg',
+                audioPath: 'audio/album1/', lyricsPath: 'lyrics/album1/', lyricsBookPath: 'lyrics-books/album1-lyrics.pdf',
                 tracks: [
                     { num: 1, title: 'POOPSICKS', file: 'poopsicks.mp3', lyricsFile: '01-poopsicks.txt' },
                     { num: 2, title: 'BACK TO POOPSICKS 2', file: 'back-to-poopsicks-2.mp3', lyricsFile: '02-back-to-poopsicks-2.txt' },
@@ -872,19 +873,26 @@
         };
 
         // ============================================
-        // ПЕРЕМЕННЫЕ СОСТОЯНИЯ
+        // СОСТОЯНИЕ ПРИЛОЖЕНИЯ
         // ============================================
-
+        
         let currentRelease = null;
+        let currentReleaseId = null;
         let currentTrackIndex = 0;
         let isPlaying = false;
-        let parsedLyrics = [];      // Данные караоке
-        let currentLyricIndex = -1; // Текущая строка караоке
-        let playCounts = {};       // Счетчик прослушиваний
+        
+        let parsedLyrics = [];
+        let currentLyricIndex = -1;
+        
+        let playCounts = {};
         const STATS_KEY = 'fn_play_stats';
-        let trackCounted = false;  // Флаг: засчитан ли трек (для логики 30 сек)
+        let trackCounted = false;
+        
+        let fsLyricsOpen = false;
 
-        // Ссылки на элементы DOM
+        // ============================================
+        // DOM ЭЛЕМЕНТЫ
+        // ============================================
         const audioPlayer = document.getElementById('audio-player');
         const player = document.getElementById('player');
         const progressBar = document.getElementById('progress-bar');
@@ -904,8 +912,29 @@
         const playerCover = document.getElementById('player-cover');
         const lyricsBtn = document.getElementById('lyrics-btn');
         const lyricsBtnMobile = document.getElementById('lyrics-btn-mobile');
+        
+        // Элементы полноэкранного плеера
+        const fullscreenPlayer = document.getElementById('fullscreen-player');
+        const fsBg = document.getElementById('fs-bg');
+        const fsCoverImg = document.getElementById('fs-cover-img');
+        const fsCover = document.getElementById('fs-cover');
+        const fsPlayBtn = document.getElementById('fs-play-btn');
+        const fsIconPlay = document.getElementById('fs-icon-play');
+        const fsIconPause = document.getElementById('fs-icon-pause');
+        const fsProgressBar = document.getElementById('fs-progress-bar');
+        const fsTimeCurrent = document.getElementById('fs-time-current');
+        const fsTimeTotal = document.getElementById('fs-time-total');
+        const fsTrackTitle = document.getElementById('fs-track-title');
+        const fsLyricsToggle = document.getElementById('fs-lyrics-toggle');
+        const fsLyricsBody = document.getElementById('fs-lyrics-body');
+        const fsLyricsTitle = document.getElementById('fs-lyrics-title');
+        const fsVolumeSlider = document.getElementById('fs-volume-slider');
+        const fsVolWave1 = document.getElementById('fs-vol-wave-1');
+        const fsVolWave2 = document.getElementById('fs-vol-wave-2');
 
-        // Инициализация при загрузке
+        // ============================================
+        // ИНИЦИАЛИЗАЦИЯ
+        // ============================================
         document.addEventListener('DOMContentLoaded', () => {
             loadStats();
             renderHome();
@@ -916,10 +945,14 @@
             initCardGlow();
         });
 
-        // --- Визуальные эффекты (Частицы, Свечение карточек) ---
+        // ============================================
+        // ВИЗУАЛЬНЫЕ ЭФФЕКТЫ
+        // ============================================
+        
         function initParticles() {
             const container = document.getElementById('particles-js');
-            for (let i = 0; i < 20; i++) {
+            const particleCount = 20;
+            for (let i = 0; i < particleCount; i++) {
                 const p = document.createElement('div');
                 const size = Math.random() * 3 + 1;
                 p.style.cssText = `
@@ -938,9 +971,15 @@
         }
 
         function initCardGlow() {
-            document.getElementById('albums-grid').addEventListener('mousemove', e => handleCardGlow(e));
-            document.getElementById('singles-grid').addEventListener('mousemove', e => handleCardGlow(e));
+            const grids = ['albums-grid', 'singles-grid'];
+            grids.forEach(id => {
+                const grid = document.getElementById(id);
+                if (grid) {
+                    grid.addEventListener('mousemove', e => handleCardGlow(e));
+                }
+            });
         }
+
         function handleCardGlow(e) {
             const card = e.target.closest('.release-card');
             if (!card) return;
@@ -949,10 +988,15 @@
             card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
         }
 
-        // --- Рендеринг страниц ---
+        // ============================================
+        // РЕНДЕРИНГ ИНТЕРФЕЙСА
+        // ============================================
+        
         function renderHome() {
             const albumsGrid = document.getElementById('albums-grid');
             const singlesGrid = document.getElementById('singles-grid');
+            if (!albumsGrid || !singlesGrid) return;
+            
             let albumsHtml = '';
             let singlesHtml = '';
 
@@ -974,18 +1018,41 @@
         }
 
         function openRelease(releaseId) {
-            currentRelease = releases[releaseId];
-            if (!currentRelease) return;
+            const release = releases[releaseId];
+            if (!release) return;
+            
+            currentRelease = release;
+            currentReleaseId = releaseId;
+            currentTrackIndex = -1; // СБРОС индекса для корректной работы handleTrackClick
 
-            document.getElementById('release-cover').innerHTML = `<img src="${currentRelease.cover}" alt="${currentRelease.title}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full bg-[var(--bg-card)] flex items-center justify-center\\'><span class=\\'text-[var(--fg-muted)]\\'>Нет обложки</span></div>'">`;
-            document.getElementById('release-title').textContent = currentRelease.title;
-            document.getElementById('release-meta').textContent = `${currentRelease.type === 'album' ? 'Альбом' : 'Сингл'} • ${currentRelease.year}`;
+            const releaseCover = document.getElementById('release-cover');
+            const releaseTitle = document.getElementById('release-title');
+            const releaseMeta = document.getElementById('release-meta');
+            
+            if (releaseCover) {
+                releaseCover.innerHTML = `<img src="${release.cover}" alt="${release.title}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full bg-[var(--bg-card)] flex items-center justify-center\\'><span class=\\'text-[var(--fg-muted)]\\'>Нет обложки</span></div>'">`;
+            }
+            if (releaseTitle) {
+                releaseTitle.textContent = release.title;
+            }
+            if (releaseMeta) {
+                releaseMeta.textContent = `${release.type === 'album' ? 'Альбом' : 'Сингл'} • ${release.year}`;
+            }
+            
+            if (release.lyricsBookPath && downloadBtn && downloadContainer) {
+                downloadBtn.href = release.lyricsBookPath;
+                downloadContainer.classList.remove('hidden');
+            } else if (downloadContainer) {
+                downloadContainer.classList.add('hidden');
+            }
 
-            if (currentRelease.lyricsBookPath) { downloadBtn.href = currentRelease.lyricsBookPath; downloadContainer.classList.remove('hidden'); }
-            else { downloadContainer.classList.add('hidden'); }
-
-            if (currentRelease.videoUrl) { videoContainer.classList.remove('hidden'); setTimeout(() => { videoIframe.src = currentRelease.videoUrl; }, 50); }
-            else { videoIframe.src = ''; videoContainer.classList.add('hidden'); }
+            if (release.videoUrl && videoContainer && videoIframe) {
+                videoContainer.classList.remove('hidden');
+                setTimeout(() => { videoIframe.src = release.videoUrl; }, 50);
+            } else {
+                if (videoIframe) videoIframe.src = ''; 
+                if (videoContainer) videoContainer.classList.add('hidden');
+            }
 
             renderTracklist();
             showPage('release');
@@ -993,12 +1060,16 @@
 
         function renderTracklist() {
             const tracklistEl = document.getElementById('tracklist');
+            if (!tracklistEl || !currentRelease) return;
+            
             let html = '';
             currentRelease.tracks.forEach((track, index) => {
                 html += `
-                    <div class="track-row flex items-center gap-5 py-4 px-4 cursor-pointer group" onclick="playTrack(${index})">
+                    <div class="track-row flex items-center gap-5 py-4 px-4 cursor-pointer group" onclick="handleTrackClick(${index})">
                         <span class="track-num w-6 text-center text-[var(--fg-muted)] text-sm font-mono group-hover:hidden">${String(track.num).padStart(2, '0')}</span>
-                        <span class="w-6 text-center hidden group-hover:block"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--accent)]"><path d="M8 5v14l11-7z"/></svg></span>
+                        <span class="w-6 text-center hidden group-hover:block">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--accent)]"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
                         <div class="flex-1 min-w-0"><p class="font-medium truncate">${track.title}</p></div>
                         <button onclick="event.stopPropagation(); showLyrics(${index})" class="lyrics-action-btn scale-90 opacity-0 group-hover:opacity-100" aria-label="Текст песни">
                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -1010,85 +1081,238 @@
             tracklistEl.innerHTML = html;
         }
 
-        // --- Управление аудио ---
+        // ============================================
+        // ЛОГИКА ВОСПРОИЗВЕДЕНИЯ
+        // ============================================
+
+        function handleTrackClick(index) {
+            // Проверяем, что это именно тот трек (сравниваем и релиз, и индекс)
+            if (currentRelease && currentReleaseId && currentTrackIndex === index) {
+                togglePlay();
+            } else {
+                playTrack(index);
+            }
+        }
+
         function playTrack(index) {
             if (!currentRelease) return;
             currentTrackIndex = index;
             const track = currentRelease.tracks[index];
+            if (!track) return;
 
-            trackCounted = false; // Сброс флага для нового трека
-            audioPlayer.src = currentRelease.audioPath + track.file;
-            document.getElementById('player-track').textContent = track.title;
-            playerCover.innerHTML = `<img src="${currentRelease.cover}" class="w-full h-full object-cover" onerror="this.style.display='none'">`;
+            trackCounted = false;
+            
+            const audioSrc = currentRelease.audioPath + track.file;
+            audioPlayer.src = audioSrc;
+            
+            const playerTrackEl = document.getElementById('player-track');
+            if (playerTrackEl) {
+                playerTrackEl.textContent = track.title;
+            }
+            
+            playerCover.innerHTML = `
+                <img src="${currentRelease.cover}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                <div class="cover-overlay">
+                    <button onclick="event.stopPropagation(); openFullscreenPlayer()" class="fullscreen-trigger-btn" aria-label="Открыть на весь экран">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
 
             player.classList.add('visible');
-            lyricsBtn.classList.remove('hidden');
-            lyricsBtnMobile.classList.remove('hidden');
+            if (lyricsBtn) lyricsBtn.classList.remove('hidden');
+            if (lyricsBtnMobile) lyricsBtnMobile.classList.remove('hidden');
 
-            document.querySelectorAll('.track-row').forEach((row, i) => row.classList.toggle('playing', i === index));
-            audioPlayer.play().then(() => { isPlaying = true; updatePlayPauseIcon(); }).catch(err => console.log('Ошибка:', err));
+            document.querySelectorAll('.track-row').forEach((row, i) => {
+                row.classList.toggle('playing', i === index);
+                row.classList.remove('paused'); 
+            });
+
+            updateFullscreenPlayer(track.title, currentRelease.cover);
+
+            audioPlayer.play().then(() => { 
+                isPlaying = true; 
+                updatePlayPauseIcon(); 
+            }).catch(err => {
+                console.log('Ошибка воспроизведения:', err);
+            });
+            
             loadLyrics(index);
         }
 
         function togglePlay() {
-            if (audioPlayer.paused) { audioPlayer.play(); isPlaying = true; } else { audioPlayer.pause(); isPlaying = false; }
+            if (audioPlayer.paused) { 
+                audioPlayer.play(); 
+                isPlaying = true; 
+            } else { 
+                audioPlayer.pause(); 
+                isPlaying = false; 
+            }
             updatePlayPauseIcon();
         }
+
         function updatePlayPauseIcon() {
-            iconPlay.classList.toggle('hidden', isPlaying);
-            iconPause.classList.toggle('hidden', !isPlaying);
-            playPauseBtn.classList.toggle('playing-state', isPlaying);
-            playerCover.classList.toggle('playing-glow', isPlaying);
-        }
-        function nextTrack() { if (currentRelease) playTrack((currentTrackIndex + 1) % currentRelease.tracks.length); }
-        function prevTrack() { if (currentRelease) playTrack(currentTrackIndex === 0 ? currentRelease.tracks.length - 1 : currentTrackIndex - 1); }
-        function seekTrack(e) {
-            const rect = e.currentTarget.getBoundingClientRect();
-            audioPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * audioPlayer.duration;
+            if (iconPlay) iconPlay.classList.toggle('hidden', isPlaying);
+            if (iconPause) iconPause.classList.toggle('hidden', !isPlaying);
+            
+            if (playPauseBtn) playPauseBtn.classList.toggle('playing-state', isPlaying);
+            if (playerCover) playerCover.classList.toggle('playing-glow', isPlaying);
+
+            const activeRow = document.querySelector('.track-row.playing');
+            if (activeRow) {
+                activeRow.classList.toggle('paused', !isPlaying);
+            }
+            
+            updateFsPlayPauseIcon();
         }
 
-        // --- Логика событий плеера (включая подсчет 30 сек) ---
+        function nextTrack() { 
+            if (currentRelease && currentRelease.tracks) {
+                playTrack((currentTrackIndex + 1) % currentRelease.tracks.length); 
+            }
+        }
+        
+        function prevTrack() { 
+            if (currentRelease && currentRelease.tracks) {
+                playTrack(currentTrackIndex === 0 ? currentRelease.tracks.length - 1 : currentTrackIndex - 1); 
+            }
+        }
+
+        function seekTrack(e) {
+            if (!audioPlayer.duration) return;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = percent * audioPlayer.duration;
+        }
+        
+        function seekTrackFs(e) {
+            if (!audioPlayer.duration) return;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = percent * audioPlayer.duration;
+        }
+
+        // ============================================
+        // ПОЛНОЭКРАННЫЙ ПЛЕЕР
+        // ============================================
+        
+        function openFullscreenPlayer() {
+            if (fullscreenPlayer) {
+                fullscreenPlayer.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeFullscreenPlayer() {
+            if (fullscreenPlayer) {
+                fullscreenPlayer.classList.remove('open');
+                fsLyricsOpen = false;
+                fullscreenPlayer.classList.remove('lyrics-open');
+                if (fsLyricsToggle) fsLyricsToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function updateFullscreenPlayer(trackTitle, coverSrc) {
+            if (fsTrackTitle) fsTrackTitle.textContent = trackTitle;
+            if (fsCoverImg) fsCoverImg.src = coverSrc;
+            if (fsBg) fsBg.style.backgroundImage = `url(${coverSrc})`;
+            if (fsLyricsTitle) fsLyricsTitle.textContent = trackTitle;
+        }
+        
+        function updateFsPlayPauseIcon() {
+            if (fsIconPlay) fsIconPlay.style.display = isPlaying ? 'none' : 'block';
+            if (fsIconPause) fsIconPause.style.display = isPlaying ? 'block' : 'none';
+            if (fsPlayBtn) fsPlayBtn.classList.toggle('playing', isPlaying);
+            if (fsCover) fsCover.classList.toggle('playing', isPlaying);
+        }
+        
+        function toggleFsLyrics() {
+            fsLyricsOpen = !fsLyricsOpen;
+            if (fullscreenPlayer) fullscreenPlayer.classList.toggle('lyrics-open', fsLyricsOpen);
+            if (fsLyricsToggle) fsLyricsToggle.classList.toggle('active', fsLyricsOpen);
+        }
+
+        // ============================================
+        // СОБЫТИЯ АУДИОПЛЕЕРА
+        // ============================================
+        
         function setupAudioEvents() {
             audioPlayer.addEventListener('timeupdate', () => {
                 if (audioPlayer.duration) {
-                    progressBar.style.width = (audioPlayer.currentTime / audioPlayer.duration) * 100 + '%';
-                    document.getElementById('time-current').textContent = formatTime(audioPlayer.currentTime);
+                    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                    if (progressBar) progressBar.style.width = progress + '%';
+                    if (fsProgressBar) fsProgressBar.style.width = progress + '%';
+                    
+                    const timeCurrentEl = document.getElementById('time-current');
+                    if (timeCurrentEl) timeCurrentEl.textContent = formatTime(audioPlayer.currentTime);
+                    if (fsTimeCurrent) fsTimeCurrent.textContent = formatTime(audioPlayer.currentTime);
+                    
                     updateKaraokeHighlight();
-
-                    // Засчитываем прослушивание после 30 секунд
+                    
                     if (audioPlayer.currentTime >= 30 && !trackCounted) {
                         incrementPlayCount();
                         trackCounted = true;
                     }
                 }
             });
-            audioPlayer.addEventListener('loadedmetadata', () => document.getElementById('time-total').textContent = formatTime(audioPlayer.duration));
+            
+            audioPlayer.addEventListener('loadedmetadata', () => {
+                const total = formatTime(audioPlayer.duration);
+                const timeTotalEl = document.getElementById('time-total');
+                if (timeTotalEl) timeTotalEl.textContent = total;
+                if (fsTimeTotal) fsTimeTotal.textContent = total;
+            });
+            
             audioPlayer.addEventListener('ended', () => nextTrack());
         }
 
-        // --- Система статистики прослушиваний ---
-        function loadStats() { const saved = localStorage.getItem(STATS_KEY); if (saved) playCounts = JSON.parse(saved); }
-        function saveStats() { localStorage.setItem(STATS_KEY, JSON.stringify(playCounts)); }
+        // ============================================
+        // СТАТИСТИКА
+        // ============================================
+        
+        function loadStats() { 
+            const saved = localStorage.getItem(STATS_KEY); 
+            if (saved) playCounts = JSON.parse(saved); 
+        }
+        
+        function saveStats() { 
+            localStorage.setItem(STATS_KEY, JSON.stringify(playCounts)); 
+        }
+        
         function incrementPlayCount() {
-            if (!currentRelease) return;
-            const key = `${Object.keys(releases).find(k => releases[k] === currentRelease)}-${currentTrackIndex}`;
+            if (!currentReleaseId) return;
+            const key = `${currentReleaseId}-${currentTrackIndex}`;
             if (!playCounts[key]) playCounts[key] = 0;
             playCounts[key]++;
             saveStats();
         }
 
-        // --- Рендеринг Чарта ---
+        // ============================================
+        // СТРАНИЦА ЧАРТА
+        // ============================================
+        
         function renderChart() {
             const chartList = document.getElementById('chart-list');
+            if (!chartList) return;
+            
             let allTracks = [];
+            
             Object.entries(releases).forEach(([releaseId, release]) => {
                 release.tracks.forEach((track, index) => {
                     allTracks.push({
-                        id: `${releaseId}-${index}`, title: track.title, cover: release.cover,
-                        plays: playCounts[`${releaseId}-${index}`] || 0, releaseId, trackIndex: index
+                        id: `${releaseId}-${index}`, 
+                        title: track.title, 
+                        cover: release.cover,
+                        plays: playCounts[`${releaseId}-${index}`] || 0, 
+                        releaseId, 
+                        trackIndex: index
                     });
                 });
             });
+
             allTracks.sort((a, b) => b.plays - a.plays);
 
             let html = '';
@@ -1104,95 +1328,236 @@
                     </div>
                 `;
             });
-            chartList.innerHTML = allTracks.length === 0 ? '<p class="text-center text-[var(--fg-muted)] mt-10">Список пуст. Начните слушать музыку!</p>' : html;
+            
+            chartList.innerHTML = allTracks.length === 0 
+                ? '<p class="text-center text-[var(--fg-muted)] mt-10">Список пуст. Начните слушать музыку!</p>' 
+                : html;
         }
-        function playChartTrack(releaseId, trackIndex) { openRelease(releaseId); setTimeout(() => playTrack(trackIndex), 100); }
+        
+        function playChartTrack(releaseId, trackIndex) { 
+            openRelease(releaseId); 
+            setTimeout(() => playTrack(trackIndex), 100); 
+        }
 
-        // --- Логика Караоке ---
+        // ============================================
+        // КАРАОКЕ
+        // ============================================
+        
         function updateKaraokeHighlight() {
             if (parsedLyrics.length === 0) return;
             let newIndex = -1;
-            for (let i = parsedLyrics.length - 1; i >= 0; i--) { if (audioPlayer.currentTime >= parsedLyrics[i].time) { newIndex = i; break; } }
+            
+            for (let i = parsedLyrics.length - 1; i >= 0; i--) { 
+                if (audioPlayer.currentTime >= parsedLyrics[i].time) { 
+                    newIndex = i; 
+                    break; 
+                } 
+            }
+
             if (newIndex !== currentLyricIndex) {
                 currentLyricIndex = newIndex;
-                const allLines = lyricsContent.querySelectorAll('.lrc-line');
-                allLines.forEach(el => el.classList.remove('active'));
-                if (newIndex !== -1 && allLines[newIndex]) {
-                    const activeEl = allLines[newIndex];
-                    activeEl.classList.add('active');
-                    lyricsContent.scrollTop = activeEl.offsetTop - (lyricsContent.clientHeight / 2) + (activeEl.clientHeight / 2);
+                
+                if (lyricsContent) {
+                    const allLines = lyricsContent.querySelectorAll('.lrc-line');
+                    allLines.forEach(el => el.classList.remove('active'));
+                    
+                    if (newIndex !== -1 && allLines[newIndex]) {
+                        const activeEl = allLines[newIndex];
+                        activeEl.classList.add('active');
+                        lyricsContent.scrollTop = activeEl.offsetTop - (lyricsContent.clientHeight / 2) + (activeEl.clientHeight / 2);
+                    }
+                }
+                
+                if (fsLyricsBody) {
+                    const fsLines = fsLyricsBody.querySelectorAll('.fs-lrc-line');
+                    fsLines.forEach(el => el.classList.remove('active'));
+                    
+                    if (newIndex !== -1 && fsLines[newIndex]) {
+                        const fsActiveEl = fsLines[newIndex];
+                        fsActiveEl.classList.add('active');
+                        fsLyricsBody.scrollTop = fsActiveEl.offsetTop - (fsLyricsBody.clientHeight / 2) + (fsActiveEl.clientHeight / 2);
+                    }
                 }
             }
         }
 
-        // --- Настройки громкости ---
-        function setupVolumeControls() { audioPlayer.volume = volumeSlider.value; updateVolumeIcon(audioPlayer.volume); volumeSlider.addEventListener('input', (e) => { audioPlayer.volume = parseFloat(e.target.value); audioPlayer.muted = false; updateVolumeIcon(audioPlayer.volume); }); }
+        // ============================================
+        // ГРОМКОСТЬ
+        // ============================================
+        
+        function setupVolumeControls() { 
+            audioPlayer.volume = volumeSlider ? volumeSlider.value : 1; 
+            updateVolumeIcon(audioPlayer.volume); 
+            
+            if (volumeSlider) {
+                volumeSlider.addEventListener('input', (e) => { 
+                    const vol = parseFloat(e.target.value);
+                    audioPlayer.volume = vol; 
+                    audioPlayer.muted = false; 
+                    updateVolumeIcon(vol); 
+                    if (fsVolumeSlider) fsVolumeSlider.value = vol;
+                }); 
+            }
+            
+            if (fsVolumeSlider) {
+                fsVolumeSlider.addEventListener('input', (e) => { 
+                    const vol = parseFloat(e.target.value);
+                    audioPlayer.volume = vol; 
+                    audioPlayer.muted = false; 
+                    updateVolumeIcon(vol); 
+                    if (volumeSlider) volumeSlider.value = vol;
+                }); 
+            }
+        }
+        
         function toggleMute() {
             audioPlayer.muted = !audioPlayer.muted;
-            if (audioPlayer.muted) { volumeSlider.value = 0; updateVolumeIcon(0); }
-            else { let vol = audioPlayer.volume || 0.5; audioPlayer.volume = vol; volumeSlider.value = vol; updateVolumeIcon(vol); }
+            if (audioPlayer.muted) { 
+                if (volumeSlider) volumeSlider.value = 0; 
+                if (fsVolumeSlider) fsVolumeSlider.value = 0;
+                updateVolumeIcon(0); 
+            } else { 
+                let vol = audioPlayer.volume || 0.5; 
+                audioPlayer.volume = vol; 
+                if (volumeSlider) volumeSlider.value = vol; 
+                if (fsVolumeSlider) fsVolumeSlider.value = vol;
+                updateVolumeIcon(vol); 
+            }
         }
+        
         function updateVolumeIcon(vol) {
-            if (vol === 0 || audioPlayer.muted) { volWave1.style.opacity = '0'; volWave2.style.opacity = '0'; }
-            else if (vol < 0.5) { volWave1.style.opacity = '1'; volWave2.style.opacity = '0'; }
-            else { volWave1.style.opacity = '1'; volWave2.style.opacity = '1'; }
+            const waves1 = vol === 0 || audioPlayer.muted ? '0' : '1';
+            const waves2 = vol < 0.5 || audioPlayer.muted ? '0' : '1';
+            
+            if (volWave1) volWave1.style.opacity = waves1;
+            if (volWave2) volWave2.style.opacity = waves2;
+            if (fsVolWave1) fsVolWave1.style.opacity = waves1;
+            if (fsVolWave2) fsVolWave2.style.opacity = waves2;
         }
 
-        function formatTime(seconds) { if (isNaN(seconds)) return '0:00'; return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`; }
+        // ============================================
+        // УТИЛИТЫ
+        // ============================================
+        
+        function formatTime(seconds) { 
+            if (isNaN(seconds)) return '0:00'; 
+            return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`; 
+        }
 
-        // --- Загрузка текста (LRC/TXT) ---
         async function loadLyrics(index) {
+            if (!currentRelease) return;
             const track = currentRelease.tracks[index];
+            if (!track) return;
+            
             let text = 'Текст не найден', isLrc = false;
-
-            // Попытка загрузить LRC
+            
             try {
                 const baseName = track.lyricsFile.replace(/\.[^/.]+$/, "");
                 const response = await fetch(currentRelease.lyricsPath + baseName + '.lrc');
-                if (response.ok) { text = await response.text(); if (text.includes('[')) isLrc = true; }
+                if (response.ok) { 
+                    text = await response.text(); 
+                    if (text.includes('[')) isLrc = true; 
+                }
             } catch (e) { }
 
-            // Если LRC нет, грузим TXT
-            if (!isLrc) { try { const response = await fetch(currentRelease.lyricsPath + track.lyricsFile); if (response.ok) text = await response.text(); } catch (e) { } }
+            if (!isLrc) { 
+                try { 
+                    const response = await fetch(currentRelease.lyricsPath + track.lyricsFile); 
+                    if (response.ok) text = await response.text(); 
+                } catch (e) { } 
+            }
 
-            document.getElementById('lyrics-track-title').textContent = track.title;
-            if (isLrc) { parsedLyrics = parseLRC(text); renderKaraokeLyrics(parsedLyrics); }
-            else { parsedLyrics = []; lyricsContent.innerHTML = text.split('\n').map(line => `<p class="mb-2">${line || '&nbsp;'}</p>`).join(''); }
+            const lyricsTrackTitle = document.getElementById('lyrics-track-title');
+            if (lyricsTrackTitle) lyricsTrackTitle.textContent = track.title;
+            
+            if (isLrc) { 
+                parsedLyrics = parseLRC(text); 
+                renderKaraokeLyrics(parsedLyrics); 
+                renderFsKaraokeLyrics(parsedLyrics);
+            } else { 
+                parsedLyrics = []; 
+                const html = text.split('\n').map(line => `<p class="mb-2">${line || '&nbsp;'}</p>`).join('');
+                if (lyricsContent) lyricsContent.innerHTML = html;
+                if (fsLyricsBody) fsLyricsBody.innerHTML = html;
+            }
         }
+        
         function parseLRC(lrcText) {
             return lrcText.split('\n').map(line => {
                 const match = line.match(/\[(\d{2}):(\d{2})(?:\.|:)(\d{2})?\](.*)/);
-                if (match) return { time: parseInt(match[1], 10) * 60 + parseInt(match[2], 10) + (match[3] ? parseInt(match[3], 10) / 100 : 0), text: match[4] || '' };
+                if (match) return { 
+                    time: parseInt(match[1], 10) * 60 + parseInt(match[2], 10) + (match[3] ? parseInt(match[3], 10) / 100 : 0), 
+                    text: match[4] || '' 
+                };
             }).filter(Boolean).sort((a, b) => a.time - b.time);
         }
-        function renderKaraokeLyrics(lyrics) {
-            lyricsContent.innerHTML = lyrics.map(line => `<p class="lrc-line" onclick="seekToLyric(${line.time})">${line.text || '...'}</p>`).join('');
+        
+        function renderKaraokeLyrics(lyrics) { 
+            if (lyricsContent) {
+                lyricsContent.innerHTML = lyrics.map(line => `<p class="lrc-line" onclick="seekToLyric(${line.time})">${line.text || '...'}</p>`).join(''); 
+            }
         }
-        function seekToLyric(time) { if (audioPlayer.duration) { audioPlayer.currentTime = time; if (!isPlaying) togglePlay(); } }
+        
+        function renderFsKaraokeLyrics(lyrics) { 
+            if (fsLyricsBody) {
+                fsLyricsBody.innerHTML = lyrics.map(line => `<p class="fs-lrc-line" onclick="seekToLyric(${line.time})">${line.text || '...'}</p>`).join(''); 
+            }
+        }
+        
+        function seekToLyric(time) { 
+            if (audioPlayer.duration) { 
+                audioPlayer.currentTime = time; 
+                if (!isPlaying) togglePlay(); 
+            } 
+        }
 
-        // --- Навигация ---
-        function showLyrics(index) { loadLyrics(index); lyricsPanel.classList.add('open'); }
-        function closeLyrics() { lyricsPanel.classList.remove('open'); }
-        function toggleLyrics() { lyricsPanel.classList.toggle('open'); }
+        // ============================================
+        // НАВИГАЦИЯ
+        // ============================================
+        
+        function showLyrics(index) { 
+            loadLyrics(index); 
+            if (lyricsPanel) lyricsPanel.classList.add('open'); 
+        }
+        
+        function closeLyrics() { 
+            if (lyricsPanel) lyricsPanel.classList.remove('open'); 
+        }
+        
+        function toggleLyrics() { 
+            if (lyricsPanel) lyricsPanel.classList.toggle('open'); 
+        }
+        
         function showPage(pageName) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            document.getElementById('page-' + pageName).classList.add('active');
+            const page = document.getElementById('page-' + pageName);
+            if (page) page.classList.add('active');
             window.scrollTo(0, 0);
+            
             if (pageName === 'home') setTimeout(initStaggerAnimation, 50);
             if (pageName === 'chart') renderChart();
         }
+        
         function initStaggerAnimation() {
             document.querySelectorAll('.stagger-item').forEach((item, index) => {
-                item.classList.remove('visible'); setTimeout(() => item.classList.add('visible'), index * 150);
+                item.classList.remove('visible'); 
+                setTimeout(() => item.classList.add('visible'), index * 150);
             });
         }
 
-        // Горячие клавиши
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeLyrics();
-            if (e.key === ' ' && document.activeElement.tagName !== 'BUTTON' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); togglePlay(); }
+            if (e.key === 'Escape') {
+                if (fullscreenPlayer && fullscreenPlayer.classList.contains('open')) {
+                    closeFullscreenPlayer();
+                } else {
+                    closeLyrics();
+                }
+            }
+            if (e.key === ' ' && document.activeElement.tagName !== 'BUTTON' && document.activeElement.tagName !== 'INPUT') { 
+                e.preventDefault(); 
+                togglePlay(); 
+            }
         });
     </script>
 </body>
-
 </html>
