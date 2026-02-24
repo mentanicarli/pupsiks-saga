@@ -191,7 +191,6 @@
 
         .track-row.playing {
             background: linear-gradient(90deg, var(--accent-soft) 0%, transparent 100%);
-            transition: background-color 0.5s ease;
         }
 
         .track-row.playing::before {
@@ -224,7 +223,7 @@
             color: var(--accent);
         }
 
-        /* --- PLAYER STYLING --- */
+        /* Плеер */
         .player {
             transform: translateY(100%);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -389,10 +388,9 @@
             transform: translateX(0);
         }
 
-        /* --- KARAOKE MODE STYLES --- */
+        /* Стили караоке */
         #lyrics-content {
             scroll-behavior: smooth;
-            /* Плавный скролл контейнера */
         }
 
         .lrc-line {
@@ -422,8 +420,80 @@
             text-shadow: 0 0 15px var(--accent-glow);
             font-weight: 600;
             margin-left: 0;
-            /* Компенсация за border */
             border-left: 3px solid var(--accent);
+        }
+
+        /* Стили страницы Чарт */
+        .chart-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        .chart-row:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .chart-row:last-child {
+            border-bottom: none;
+        }
+
+        .chart-num {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--fg-muted);
+            width: 30px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .chart-num.top-3 {
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .chart-cover {
+            width: 48px;
+            height: 48px;
+            border-radius: 6px;
+            background: var(--bg-card);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .chart-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .chart-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chart-title {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chart-artist {
+            font-size: 12px;
+            color: var(--fg-muted);
+        }
+
+        .chart-plays {
+            font-size: 12px;
+            color: var(--fg-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .stagger-item {
@@ -492,6 +562,7 @@
 <body>
     <div id="particles-js"></div>
 
+    <!-- Шапка сайта -->
     <header class="fixed top-0 left-0 right-0 z-40">
         <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
             <button onclick="showPage('home')" class="flex items-center gap-3 group" aria-label="На главную">
@@ -502,7 +573,20 @@
                     class="text-lg font-medium tracking-tight text-white/90 group-hover:text-white transition-colors">frnk
                     ness collection</span>
             </button>
-            <nav class="hidden sm:flex items-center gap-6 text-sm text-[var(--fg-muted)]">
+
+            <!-- Навигация (справа) -->
+            <nav class="hidden sm:flex items-center gap-4 text-sm text-[var(--fg-muted)]">
+                <!-- Кнопка Чарт (перенесена сюда, цвет как у PUPSIK4LIFE) -->
+                <button onclick="showPage('chart')"
+                    class="flex items-center gap-2 px-5 py-2 text-sm tracking-widest uppercase text-[var(--fg-muted)] border border-[var(--border)] rounded-full hover:text-[var(--fg)] hover:border-[var(--fg-muted)] transition-all duration-300">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    <span>Чарт</span>
+                </button>
+
                 <span class="text-xs tracking-widest uppercase">PUPSIK4LIFE</span>
             </nav>
         </div>
@@ -510,7 +594,7 @@
 
     <main class="pt-20 pb-32 min-h-screen relative z-10">
 
-        <!-- HOME PAGE -->
+        <!-- ГЛАВНАЯ СТРАНИЦА -->
         <div id="page-home" class="page active">
             <div class="max-w-6xl mx-auto px-6 py-12">
                 <section class="mb-20 stagger-item">
@@ -531,7 +615,30 @@
             </div>
         </div>
 
-        <!-- RELEASE PAGE -->
+        <!-- СТРАНИЦА ЧАРТА -->
+        <div id="page-chart" class="page">
+            <div class="max-w-2xl mx-auto px-6 py-8">
+
+                <!-- Кнопка Назад -->
+                <button onclick="showPage('home')"
+                    class="flex items-center gap-2 text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors mb-12 group">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        class="group-hover:-translate-x-1 transition-transform">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    <span class="text-sm">Назад</span>
+                </button>
+
+                <div class="text-center mb-12">
+                    <h1 class="text-3xl font-bold mb-2 tracking-tight">Чарт песен</h1>
+                    <p class="text-sm text-[var(--fg-muted)]">Рейтинг формируется на основе кол-ва прослушиваний</p>
+                </div>
+
+                <div id="chart-list" class="space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА РЕЛИЗА -->
         <div id="page-release" class="page">
             <div class="max-w-6xl mx-auto px-6 py-8">
                 <button onclick="showPage('home')"
@@ -594,7 +701,7 @@
         </div>
     </main>
 
-    <!-- Lyrics Panel -->
+    <!-- Панель с текстом песни (Караоке) -->
     <div id="lyrics-panel"
         class="lyrics-panel fixed top-0 right-0 w-full sm:w-[400px] h-full bg-[var(--bg-elevated)] z-50 overflow-hidden flex flex-col">
         <div class="p-6 border-b border-white/5 flex items-center justify-between flex-shrink-0">
@@ -615,7 +722,7 @@
         </div>
     </div>
 
-    <!-- Player -->
+    <!-- Плеер -->
     <div id="player" class="player fixed bottom-0 left-0 right-0 bg-[var(--bg-elevated)] z-30">
         <div class="max-w-6xl mx-auto">
             <div class="progress-container rounded-none" onclick="seekTrack(event)">
@@ -646,6 +753,7 @@
                     </div>
                 </div>
 
+                <!-- Управление воспроизведением -->
                 <div class="flex items-center gap-2">
                     <button onclick="prevTrack()"
                         class="play-btn p-2 text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors"
@@ -674,6 +782,7 @@
                     </button>
                 </div>
 
+                <!-- Время и громкость -->
                 <div class="hidden sm:flex items-center gap-4 flex-1 justify-end">
                     <div class="flex items-center gap-2 text-xs text-[var(--fg-muted)] font-mono w-24 justify-end">
                         <span id="time-current">0:00</span>
@@ -712,7 +821,7 @@
 
     <script>
         // ============================================
-        // ДАННЫЕ РЕЛИЗОВ (Добавлено поле lrcFile)
+        // ДАННЫЕ РЕЛИЗОВ
         // ============================================
 
         const releases = {
@@ -725,37 +834,22 @@
                 lyricsPath: 'lyrics/album1/',
                 lyricsBookPath: 'lyrics-books/album1-lyrics.pdf',
                 tracks: [
-                    // Добавил lrcFile для караоке. Если его нет, загрузится txt
-                    { num: 1, title: 'POOPSICKS', file: 'poopsicks.mp3', lyricsFile: '01-poopsicks.txt', lrcFile: '01-poopsicks.lrc' },
+                    { num: 1, title: 'POOPSICKS', file: 'poopsicks.mp3', lyricsFile: '01-poopsicks.txt' },
                     { num: 2, title: 'BACK TO POOPSICKS 2', file: 'back-to-poopsicks-2.mp3', lyricsFile: '02-back-to-poopsicks-2.txt' },
                     { num: 3, title: 'Macan-Walker', file: 'macan-walker.mp3', lyricsFile: '03-macan-walker.txt' },
                     { num: 4, title: 'BORDOVIY SALON', file: 'bordoviy-salon.mp3', lyricsFile: '04-bordoviy-salon.txt' },
                     { num: 5, title: 'Classica Ryazanki / Lost Memory (ft. twizzyRRich)', file: 'classica-ryazanki.mp3', lyricsFile: '05-classica-ryazanki.txt' }
                 ]
             },
-
             'disinvolto': {
-                type: 'single',
-                title: 'Disinvolto / Danilovsky',
-                year: '2025',
-                cover: 'images/single1-cover.jpg',
-                audioPath: 'audio/singles/',
-                lyricsPath: 'lyrics/singles/',
-                lyricsBookPath: 'lyrics-books/disinvolto-lyrics.pdf',
+                type: 'single', title: 'Disinvolto / Danilovsky', year: '2025', cover: 'images/single1-cover.jpg',
+                audioPath: 'audio/singles/', lyricsPath: 'lyrics/singles/', lyricsBookPath: 'lyrics-books/disinvolto-lyrics.pdf',
                 videoUrl: 'https://www.youtube.com/embed/vI_8FLsAn50',
-                tracks: [
-                    { num: 1, title: 'Disinvolto / Danilovsky', file: 'disinvolto.mp3', lyricsFile: 'disinvolto.txt' }
-                ]
+                tracks: [{ num: 1, title: 'Disinvolto / Danilovsky', file: 'disinvolto.mp3', lyricsFile: 'disinvolto.txt' }]
             },
-
             'six-senses-pupsiks': {
-                type: 'album',
-                title: 'Six Senses of Pupsiks',
-                year: '2025',
-                cover: 'images/album2-cover.jpg',
-                audioPath: 'audio/album2/',
-                lyricsPath: 'lyrics/album2/',
-                lyricsBookPath: 'lyrics-books/album2-lyrics.pdf',
+                type: 'album', title: 'Six Senses of Pupsiks', year: '2025', cover: 'images/album2-cover.jpg',
+                audioPath: 'audio/album2/', lyricsPath: 'lyrics/album2/', lyricsBookPath: 'lyrics-books/album2-lyrics.pdf',
                 tracks: [
                     { num: 1, title: "still ballin'", file: 'still-ballin.mp3', lyricsFile: '01-still-ballin.txt' },
                     { num: 2, title: "Hulk's Reflections", file: 'hulks-reflections.mp3', lyricsFile: '02-hulks-reflections.txt' },
@@ -765,44 +859,32 @@
                     { num: 6, title: 'monologue about the daily routine', file: 'monologue.mp3', lyricsFile: '06-monologue.txt' }
                 ]
             },
-
             'nypupsoids': {
-                type: 'single',
-                title: 'nypupsoids',
-                year: '2025',
-                cover: 'images/single2-cover.jpg',
-                audioPath: 'audio/singles/',
-                lyricsPath: 'lyrics/singles/',
-                tracks: [
-                    { num: 1, title: 'nypupsoids', file: 'nypupsoids.mp3', lyricsFile: 'nypupsoids.txt' }
-                ]
+                type: 'single', title: 'nypupsoids', year: '2025', cover: 'images/single2-cover.jpg',
+                audioPath: 'audio/singles/', lyricsPath: 'lyrics/singles/',
+                tracks: [{ num: 1, title: 'nypupsoids', file: 'nypupsoids.mp3', lyricsFile: 'nypupsoids.txt' }]
             },
-
             'thermoland': {
-                type: 'single',
-                title: 'thermoland',
-                year: '2026',
-                cover: 'images/single3-cover.jpg',
-                audioPath: 'audio/singles/',
-                lyricsPath: 'lyrics/singles/',
-                tracks: [
-                    { num: 1, title: 'thermoland', file: 'thermoland.mp3', lyricsFile: 'thermoland.txt' }
-                ]
+                type: 'single', title: 'thermoland', year: '2026', cover: 'images/single3-cover.jpg',
+                audioPath: 'audio/singles/', lyricsPath: 'lyrics/singles/',
+                tracks: [{ num: 1, title: 'thermoland', file: 'thermoland.mp3', lyricsFile: 'thermoland.txt' }]
             }
         };
 
         // ============================================
-        // ЛОГИКА
+        // ПЕРЕМЕННЫЕ СОСТОЯНИЯ
         // ============================================
 
         let currentRelease = null;
         let currentTrackIndex = 0;
         let isPlaying = false;
+        let parsedLyrics = [];      // Данные караоке
+        let currentLyricIndex = -1; // Текущая строка караоке
+        let playCounts = {};       // Счетчик прослушиваний
+        const STATS_KEY = 'fn_play_stats';
+        let trackCounted = false;  // Флаг: засчитан ли трек (для логики 30 сек)
 
-        // === KARAOKE STATE ===
-        let parsedLyrics = []; // Массив {time, text}
-        let currentLyricIndex = -1; // Индекс текущей строки
-
+        // Ссылки на элементы DOM
         const audioPlayer = document.getElementById('audio-player');
         const player = document.getElementById('player');
         const progressBar = document.getElementById('progress-bar');
@@ -812,21 +894,20 @@
         const downloadContainer = document.getElementById('download-container');
         const downloadBtn = document.getElementById('download-lyrics-btn');
         const lyricsContent = document.getElementById('lyrics-content');
-
         const videoContainer = document.getElementById('video-container');
         const videoIframe = document.getElementById('video-iframe');
-
         const volumeSlider = document.getElementById('volume-slider');
         const volumeIcon = document.getElementById('volume-icon');
         const volWave1 = document.getElementById('vol-wave-1');
         const volWave2 = document.getElementById('vol-wave-2');
-
         const playPauseBtn = document.getElementById('play-pause-btn');
         const playerCover = document.getElementById('player-cover');
         const lyricsBtn = document.getElementById('lyrics-btn');
         const lyricsBtnMobile = document.getElementById('lyrics-btn-mobile');
 
+        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
             renderHome();
             initStaggerAnimation();
             setupAudioEvents();
@@ -835,55 +916,40 @@
             initCardGlow();
         });
 
-        // --- Particles Logic ---
+        // --- Визуальные эффекты (Частицы, Свечение карточек) ---
         function initParticles() {
             const container = document.getElementById('particles-js');
-            const particleCount = 20;
-            for (let i = 0; i < particleCount; i++) {
+            for (let i = 0; i < 20; i++) {
                 const p = document.createElement('div');
                 const size = Math.random() * 3 + 1;
                 p.style.cssText = `
-                    position: absolute;
-                    width: ${size}px;
-                    height: ${size}px;
-                    background: rgba(212, 255, 0, 0.4);
-                    border-radius: 50%;
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
+                    position: absolute; width: ${size}px; height: ${size}px;
+                    background: rgba(212, 255, 0, 0.4); border-radius: 50%;
+                    left: ${Math.random() * 100}%; top: ${Math.random() * 100}%;
                     box-shadow: 0 0 ${size * 2}px rgba(212, 255, 0, 0.2);
                     animation: float ${Math.random() * 10 + 10}s linear infinite;
                     animation-delay: ${Math.random() * 5}s;
                 `;
                 container.appendChild(p);
             }
-
             const style = document.createElement('style');
-            style.textContent = `
-                @keyframes float {
-                    0% { transform: translateY(0) translateX(0); opacity: 0; }
-                    50% { opacity: 0.5; }
-                    100% { transform: translateY(-100vh) translateX(${Math.random() > 0.5 ? '' : '-'}50px); opacity: 0; }
-                }
-            `;
+            style.textContent = `@keyframes float { 0% { transform: translateY(0) translateX(0); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: translateY(-100vh) translateX(${Math.random() > 0.5 ? '' : '-'}50px); opacity: 0; } }`;
             document.head.appendChild(style);
         }
 
-        // --- Card Glow Effect ---
         function initCardGlow() {
             document.getElementById('albums-grid').addEventListener('mousemove', e => handleCardGlow(e));
             document.getElementById('singles-grid').addEventListener('mousemove', e => handleCardGlow(e));
         }
-
         function handleCardGlow(e) {
             const card = e.target.closest('.release-card');
             if (!card) return;
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            card.style.setProperty('--mouse-x', `${x}px`);
-            card.style.setProperty('--mouse-y', `${y}px`);
+            card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+            card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
         }
 
+        // --- Рендеринг страниц ---
         function renderHome() {
             const albumsGrid = document.getElementById('albums-grid');
             const singlesGrid = document.getElementById('singles-grid');
@@ -891,23 +957,18 @@
             let singlesHtml = '';
 
             Object.entries(releases).forEach(([id, release]) => {
-                const trackCount = release.tracks.length;
-                const meta = release.type === 'album' ? `${trackCount} треков` : 'Сингл';
-
+                const meta = release.type === 'album' ? `${release.tracks.length} треков` : 'Сингл';
                 const cardHtml = `
                     <button onclick="openRelease('${id}')" class="release-card text-left rounded-xl p-4 transition-all group relative">
                         <div class="aspect-square rounded-lg overflow-hidden mb-4 bg-[var(--bg)] shadow-lg">
                             <img src="${release.cover}" alt="${release.title}" class="card-image w-full h-full object-cover" onerror="this.style.display='none'">
                         </div>
-                        <h3 class="font-semibold text-[var(--fg)] group-hover:text-[var(--accent)] transition-colors line-clamp-2 relative z-10">
-                            ${release.title}
-                        </h3>
+                        <h3 class="font-semibold text-[var(--fg)] group-hover:text-[var(--accent)] transition-colors line-clamp-2 relative z-10">${release.title}</h3>
                         <p class="text-xs text-[var(--fg-muted)] mt-1 relative z-10">${meta} • ${release.year}</p>
                     </button>
                 `;
                 if (release.type === 'album') albumsHtml += cardHtml; else singlesHtml += cardHtml;
             });
-
             albumsGrid.innerHTML = albumsHtml;
             singlesGrid.innerHTML = singlesHtml;
         }
@@ -916,28 +977,15 @@
             currentRelease = releases[releaseId];
             if (!currentRelease) return;
 
-            const coverEl = document.getElementById('release-cover');
-            coverEl.innerHTML = `<img src="${currentRelease.cover}" alt="${currentRelease.title}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full bg-[var(--bg-card)] flex items-center justify-center\\'><span class=\\'text-[var(--fg-muted)]\\'>Нет обложки</span></div>'">`;
-
+            document.getElementById('release-cover').innerHTML = `<img src="${currentRelease.cover}" alt="${currentRelease.title}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full bg-[var(--bg-card)] flex items-center justify-center\\'><span class=\\'text-[var(--fg-muted)]\\'>Нет обложки</span></div>'">`;
             document.getElementById('release-title').textContent = currentRelease.title;
             document.getElementById('release-meta').textContent = `${currentRelease.type === 'album' ? 'Альбом' : 'Сингл'} • ${currentRelease.year}`;
 
-            if (currentRelease.lyricsBookPath) {
-                downloadBtn.href = currentRelease.lyricsBookPath;
-                downloadContainer.classList.remove('hidden');
-            } else {
-                downloadContainer.classList.add('hidden');
-            }
+            if (currentRelease.lyricsBookPath) { downloadBtn.href = currentRelease.lyricsBookPath; downloadContainer.classList.remove('hidden'); }
+            else { downloadContainer.classList.add('hidden'); }
 
-            if (currentRelease.videoUrl) {
-                videoContainer.classList.remove('hidden');
-                setTimeout(() => {
-                    videoIframe.src = currentRelease.videoUrl;
-                }, 50);
-            } else {
-                videoIframe.src = '';
-                videoContainer.classList.add('hidden');
-            }
+            if (currentRelease.videoUrl) { videoContainer.classList.remove('hidden'); setTimeout(() => { videoIframe.src = currentRelease.videoUrl; }, 50); }
+            else { videoIframe.src = ''; videoContainer.classList.add('hidden'); }
 
             renderTracklist();
             showPage('release');
@@ -946,14 +994,11 @@
         function renderTracklist() {
             const tracklistEl = document.getElementById('tracklist');
             let html = '';
-
             currentRelease.tracks.forEach((track, index) => {
                 html += `
-                    <div class="track-row flex items-center gap-5 py-4 px-4 cursor-pointer group" data-index="${index}" onclick="playTrack(${index})">
+                    <div class="track-row flex items-center gap-5 py-4 px-4 cursor-pointer group" onclick="playTrack(${index})">
                         <span class="track-num w-6 text-center text-[var(--fg-muted)] text-sm font-mono group-hover:hidden">${String(track.num).padStart(2, '0')}</span>
-                        <span class="w-6 text-center hidden group-hover:block">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--accent)]"><path d="M8 5v14l11-7z"/></svg>
-                        </span>
+                        <span class="w-6 text-center hidden group-hover:block"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--accent)]"><path d="M8 5v14l11-7z"/></svg></span>
                         <div class="flex-1 min-w-0"><p class="font-medium truncate">${track.title}</p></div>
                         <button onclick="event.stopPropagation(); showLyrics(${index})" class="lyrics-action-btn scale-90 opacity-0 group-hover:opacity-100" aria-label="Текст песни">
                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -965,14 +1010,15 @@
             tracklistEl.innerHTML = html;
         }
 
+        // --- Управление аудио ---
         function playTrack(index) {
             if (!currentRelease) return;
             currentTrackIndex = index;
             const track = currentRelease.tracks[index];
 
+            trackCounted = false; // Сброс флага для нового трека
             audioPlayer.src = currentRelease.audioPath + track.file;
             document.getElementById('player-track').textContent = track.title;
-
             playerCover.innerHTML = `<img src="${currentRelease.cover}" class="w-full h-full object-cover" onerror="this.style.display='none'">`;
 
             player.classList.add('visible');
@@ -980,265 +1026,171 @@
             lyricsBtnMobile.classList.remove('hidden');
 
             document.querySelectorAll('.track-row').forEach((row, i) => row.classList.toggle('playing', i === index));
-
-            // Сброс караоке состояния
-            parsedLyrics = [];
-            currentLyricIndex = -1;
-
-            audioPlayer.play().then(() => {
-                isPlaying = true;
-                updatePlayPauseIcon();
-            }).catch(err => console.log('Ошибка:', err));
-
+            audioPlayer.play().then(() => { isPlaying = true; updatePlayPauseIcon(); }).catch(err => console.log('Ошибка:', err));
             loadLyrics(index);
         }
 
         function togglePlay() {
-            if (audioPlayer.paused) { audioPlayer.play(); isPlaying = true; }
-            else { audioPlayer.pause(); isPlaying = false; }
+            if (audioPlayer.paused) { audioPlayer.play(); isPlaying = true; } else { audioPlayer.pause(); isPlaying = false; }
             updatePlayPauseIcon();
         }
-
         function updatePlayPauseIcon() {
             iconPlay.classList.toggle('hidden', isPlaying);
             iconPause.classList.toggle('hidden', !isPlaying);
             playPauseBtn.classList.toggle('playing-state', isPlaying);
             playerCover.classList.toggle('playing-glow', isPlaying);
         }
-
         function nextTrack() { if (currentRelease) playTrack((currentTrackIndex + 1) % currentRelease.tracks.length); }
         function prevTrack() { if (currentRelease) playTrack(currentTrackIndex === 0 ? currentRelease.tracks.length - 1 : currentTrackIndex - 1); }
-
         function seekTrack(e) {
             const rect = e.currentTarget.getBoundingClientRect();
-            const percent = (e.clientX - rect.left) / rect.width;
-            audioPlayer.currentTime = percent * audioPlayer.duration;
+            audioPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * audioPlayer.duration;
         }
 
-        // === ОБНОВЛЕННАЯ ЛОГИКА АУДИО СОБЫТИЙ (КАРАОКЕ) ===
+        // --- Логика событий плеера (включая подсчет 30 сек) ---
         function setupAudioEvents() {
             audioPlayer.addEventListener('timeupdate', () => {
                 if (audioPlayer.duration) {
-                    // Прогресс бар
                     progressBar.style.width = (audioPlayer.currentTime / audioPlayer.duration) * 100 + '%';
                     document.getElementById('time-current').textContent = formatTime(audioPlayer.currentTime);
-
-                    // Синхронизация караоке
                     updateKaraokeHighlight();
+
+                    // Засчитываем прослушивание после 30 секунд
+                    if (audioPlayer.currentTime >= 30 && !trackCounted) {
+                        incrementPlayCount();
+                        trackCounted = true;
+                    }
                 }
             });
             audioPlayer.addEventListener('loadedmetadata', () => document.getElementById('time-total').textContent = formatTime(audioPlayer.duration));
             audioPlayer.addEventListener('ended', () => nextTrack());
         }
 
-        // === ФУНКЦИЯ ПОДСВЕТКИ И СКРОЛЛА ===
+        // --- Система статистики прослушиваний ---
+        function loadStats() { const saved = localStorage.getItem(STATS_KEY); if (saved) playCounts = JSON.parse(saved); }
+        function saveStats() { localStorage.setItem(STATS_KEY, JSON.stringify(playCounts)); }
+        function incrementPlayCount() {
+            if (!currentRelease) return;
+            const key = `${Object.keys(releases).find(k => releases[k] === currentRelease)}-${currentTrackIndex}`;
+            if (!playCounts[key]) playCounts[key] = 0;
+            playCounts[key]++;
+            saveStats();
+        }
+
+        // --- Рендеринг Чарта ---
+        function renderChart() {
+            const chartList = document.getElementById('chart-list');
+            let allTracks = [];
+            Object.entries(releases).forEach(([releaseId, release]) => {
+                release.tracks.forEach((track, index) => {
+                    allTracks.push({
+                        id: `${releaseId}-${index}`, title: track.title, cover: release.cover,
+                        plays: playCounts[`${releaseId}-${index}`] || 0, releaseId, trackIndex: index
+                    });
+                });
+            });
+            allTracks.sort((a, b) => b.plays - a.plays);
+
+            let html = '';
+            allTracks.forEach((item, index) => {
+                html += `
+                    <div class="chart-row cursor-pointer group" onclick="playChartTrack('${item.releaseId}', ${item.trackIndex})">
+                        <div class="chart-num ${index < 3 ? 'top-3' : ''}">${index + 1}</div>
+                        <div class="chart-cover"><img src="${item.cover}" alt=""></div>
+                        <div class="chart-info"><div class="chart-title">${item.title}</div><div class="chart-artist">frnk ness</div></div>
+                        <div class="chart-plays">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>${item.plays}
+                        </div>
+                    </div>
+                `;
+            });
+            chartList.innerHTML = allTracks.length === 0 ? '<p class="text-center text-[var(--fg-muted)] mt-10">Список пуст. Начните слушать музыку!</p>' : html;
+        }
+        function playChartTrack(releaseId, trackIndex) { openRelease(releaseId); setTimeout(() => playTrack(trackIndex), 100); }
+
+        // --- Логика Караоке ---
         function updateKaraokeHighlight() {
             if (parsedLyrics.length === 0) return;
-
-            const currentTime = audioPlayer.currentTime;
             let newIndex = -1;
-
-            // Находим индекс текущей строки
-            // Итерируем с конца, чтобы ловить момент "уже играет"
-            for (let i = parsedLyrics.length - 1; i >= 0; i--) {
-                if (currentTime >= parsedLyrics[i].time) {
-                    newIndex = i;
-                    break;
-                }
-            }
-
-            // Если строка изменилась
+            for (let i = parsedLyrics.length - 1; i >= 0; i--) { if (audioPlayer.currentTime >= parsedLyrics[i].time) { newIndex = i; break; } }
             if (newIndex !== currentLyricIndex) {
                 currentLyricIndex = newIndex;
-
-                // Удаляем класс active у всех
                 const allLines = lyricsContent.querySelectorAll('.lrc-line');
                 allLines.forEach(el => el.classList.remove('active'));
-
-                // Добавляем класс active текущей
                 if (newIndex !== -1 && allLines[newIndex]) {
                     const activeEl = allLines[newIndex];
                     activeEl.classList.add('active');
-
-                    // Плавный скролл
-                    const containerHeight = lyricsContent.clientHeight;
-                    const elementTop = activeEl.offsetTop;
-                    const elementHeight = activeEl.clientHeight;
-
-                    // Центрируем элемент
-                    lyricsContent.scrollTop = elementTop - (containerHeight / 2) + (elementHeight / 2);
+                    lyricsContent.scrollTop = activeEl.offsetTop - (lyricsContent.clientHeight / 2) + (activeEl.clientHeight / 2);
                 }
             }
         }
 
-        function setupVolumeControls() {
-            audioPlayer.volume = volumeSlider.value;
-            updateVolumeIcon(audioPlayer.volume);
-            volumeSlider.addEventListener('input', (e) => {
-                const value = parseFloat(e.target.value);
-                audioPlayer.volume = value;
-                audioPlayer.muted = false;
-                updateVolumeIcon(value);
-            });
-        }
-
+        // --- Настройки громкости ---
+        function setupVolumeControls() { audioPlayer.volume = volumeSlider.value; updateVolumeIcon(audioPlayer.volume); volumeSlider.addEventListener('input', (e) => { audioPlayer.volume = parseFloat(e.target.value); audioPlayer.muted = false; updateVolumeIcon(audioPlayer.volume); }); }
         function toggleMute() {
             audioPlayer.muted = !audioPlayer.muted;
-            if (audioPlayer.muted) {
-                volumeSlider.value = 0;
-                updateVolumeIcon(0);
-            } else {
-                let vol = audioPlayer.volume;
-                if (vol === 0) vol = 0.5;
-                audioPlayer.volume = vol;
-                volumeSlider.value = vol;
-                updateVolumeIcon(vol);
-            }
+            if (audioPlayer.muted) { volumeSlider.value = 0; updateVolumeIcon(0); }
+            else { let vol = audioPlayer.volume || 0.5; audioPlayer.volume = vol; volumeSlider.value = vol; updateVolumeIcon(vol); }
         }
-
         function updateVolumeIcon(vol) {
-            if (vol === 0 || audioPlayer.muted) {
-                volWave1.style.opacity = '0';
-                volWave2.style.opacity = '0';
-            } else if (vol < 0.5) {
-                volWave1.style.opacity = '1';
-                volWave2.style.opacity = '0';
-            } else {
-                volWave1.style.opacity = '1';
-                volWave2.style.opacity = '1';
-            }
+            if (vol === 0 || audioPlayer.muted) { volWave1.style.opacity = '0'; volWave2.style.opacity = '0'; }
+            else if (vol < 0.5) { volWave1.style.opacity = '1'; volWave2.style.opacity = '0'; }
+            else { volWave1.style.opacity = '1'; volWave2.style.opacity = '1'; }
         }
 
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return '0:00';
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        }
+        function formatTime(seconds) { if (isNaN(seconds)) return '0:00'; return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`; }
 
-        // === ЗАГРУЗКА ТЕКСТА (LRC ИЛИ TXT) ===
+        // --- Загрузка текста (LRC/TXT) ---
         async function loadLyrics(index) {
             const track = currentRelease.tracks[index];
+            let text = 'Текст не найден', isLrc = false;
 
-            // Приоритет lrc файлу
-            let lrcFile = null;
-            if (track.lrcFile) {
-                lrcFile = currentRelease.lyricsPath + track.lrcFile;
-            } else if (track.lyricsFile) {
-                // Попытка заменить расширение на .lrc
+            // Попытка загрузить LRC
+            try {
                 const baseName = track.lyricsFile.replace(/\.[^/.]+$/, "");
-                lrcFile = currentRelease.lyricsPath + baseName + '.lrc';
-            }
+                const response = await fetch(currentRelease.lyricsPath + baseName + '.lrc');
+                if (response.ok) { text = await response.text(); if (text.includes('[')) isLrc = true; }
+            } catch (e) { }
 
-            let text = 'Текст не найден';
-            let isLrc = false;
-
-            // Пробуем загрузить LRC
-            if (lrcFile) {
-                try {
-                    const response = await fetch(lrcFile);
-                    if (response.ok) {
-                        text = await response.text();
-                        if (text.includes('[') && text.includes(']')) isLrc = true;
-                    }
-                } catch (e) { console.log('LRC не найден, пробуем TXT'); }
-            }
-
-            // Если LRC не загрузился, грузим TXT
-            if (!isLrc && track.lyricsFile) {
-                try {
-                    const response = await fetch(currentRelease.lyricsPath + track.lyricsFile);
-                    if (response.ok) text = await response.text();
-                } catch (e) { console.log('Ошибка загрузки текста:', e); }
-            }
+            // Если LRC нет, грузим TXT
+            if (!isLrc) { try { const response = await fetch(currentRelease.lyricsPath + track.lyricsFile); if (response.ok) text = await response.text(); } catch (e) { } }
 
             document.getElementById('lyrics-track-title').textContent = track.title;
-
-            if (isLrc) {
-                parsedLyrics = parseLRC(text);
-                renderKaraokeLyrics(parsedLyrics);
-            } else {
-                parsedLyrics = [];
-                renderPlainLyrics(text);
-            }
+            if (isLrc) { parsedLyrics = parseLRC(text); renderKaraokeLyrics(parsedLyrics); }
+            else { parsedLyrics = []; lyricsContent.innerHTML = text.split('\n').map(line => `<p class="mb-2">${line || '&nbsp;'}</p>`).join(''); }
         }
-
-        // ПАРСЕР LRC
         function parseLRC(lrcText) {
-            const lines = lrcText.split('\n');
-            const result = [];
-            // Regex для [mm:ss.xx] или [mm:ss:xx] или [mm:ss]
-            const timeRegex = /\[(\d{2}):(\d{2})(?:\.|:)(\d{2})?\](.*)/;
-
-            lines.forEach(line => {
-                const match = line.match(timeRegex);
-                if (match) {
-                    const minutes = parseInt(match[1], 10);
-                    const seconds = parseInt(match[2], 10);
-                    const milliseconds = match[3] ? parseInt(match[3], 10) : 0;
-                    // Конвертируем в секунды
-                    const time = minutes * 60 + seconds + (milliseconds / 100);
-                    const text = match[4] || '';
-                    result.push({ time, text });
-                }
-            });
-
-            // Сортировка на всякий случай
-            return result.sort((a, b) => a.time - b.time);
+            return lrcText.split('\n').map(line => {
+                const match = line.match(/\[(\d{2}):(\d{2})(?:\.|:)(\d{2})?\](.*)/);
+                if (match) return { time: parseInt(match[1], 10) * 60 + parseInt(match[2], 10) + (match[3] ? parseInt(match[3], 10) / 100 : 0), text: match[4] || '' };
+            }).filter(Boolean).sort((a, b) => a.time - b.time);
         }
-
-        // РЕНДЕРИНГ КАРАОКЕ
         function renderKaraokeLyrics(lyrics) {
-            if (lyrics.length === 0) {
-                lyricsContent.innerHTML = '<p class="italic">Файл пуст или поврежден</p>';
-                return;
-            }
-
-            let html = '';
-            lyrics.forEach((line, index) => {
-                // Каждая строка - div с data-time для клика
-                html += `<p class="lrc-line" data-time="${line.time}" onclick="seekToLyric(${line.time})">${line.text || '...'}</p>`;
-            });
-            lyricsContent.innerHTML = html;
+            lyricsContent.innerHTML = lyrics.map(line => `<p class="lrc-line" onclick="seekToLyric(${line.time})">${line.text || '...'}</p>`).join('');
         }
+        function seekToLyric(time) { if (audioPlayer.duration) { audioPlayer.currentTime = time; if (!isPlaying) togglePlay(); } }
 
-        // РЕНДЕРИНГ ОБЫЧНОГО ТЕКСТА
-        function renderPlainLyrics(text) {
-            lyricsContent.innerHTML = text.split('\n').map(line => `<p class="mb-2">${line || '&nbsp;'}</p>`).join('');
-        }
-
-        // ПЕРЕМОТКА ПО КЛИКУ НА СТРОКУ
-        function seekToLyric(time) {
-            if (audioPlayer.duration) {
-                audioPlayer.currentTime = time;
-                if (!isPlaying) togglePlay();
-            }
-        }
-
+        // --- Навигация ---
         function showLyrics(index) { loadLyrics(index); lyricsPanel.classList.add('open'); }
         function closeLyrics() { lyricsPanel.classList.remove('open'); }
         function toggleLyrics() { lyricsPanel.classList.toggle('open'); }
-
         function showPage(pageName) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById('page-' + pageName).classList.add('active');
             window.scrollTo(0, 0);
             if (pageName === 'home') setTimeout(initStaggerAnimation, 50);
+            if (pageName === 'chart') renderChart();
         }
-
         function initStaggerAnimation() {
             document.querySelectorAll('.stagger-item').forEach((item, index) => {
-                item.classList.remove('visible');
-                setTimeout(() => item.classList.add('visible'), index * 150);
+                item.classList.remove('visible'); setTimeout(() => item.classList.add('visible'), index * 150);
             });
         }
 
+        // Горячие клавиши
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeLyrics();
-            if (e.key === ' ' && document.activeElement.tagName !== 'BUTTON' && document.activeElement.tagName !== 'INPUT') {
-                e.preventDefault();
-                togglePlay();
-            }
+            if (e.key === ' ' && document.activeElement.tagName !== 'BUTTON' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); togglePlay(); }
         });
     </script>
 </body>
