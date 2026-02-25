@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключаем Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* --- Переменные дизайна --- */
         :root {
@@ -394,7 +396,7 @@
             display: flex; align-items: center; justify-content: flex-start;
             gap: 20px;
             /* Смещаем кнопки вправо для центрирования Play/Pause под обложкой */
-            padding-left: 385px;
+            padding-left: 30px;
         }
         
         /* Кнопки в полноэкранном режиме */
@@ -786,7 +788,7 @@
             .fs-controls-inner { 
                 gap: 16px; 
                 flex-wrap: nowrap;
-                padding-left: 32px;
+                padding-left: 18px;
             }
             
             .fs-btn svg { width: 22px; height: 22px; }
@@ -1174,6 +1176,14 @@
         };
 
         // ============================================
+        // SUPABASE ИНИЦИАЛИЗАЦИЯ
+        // ============================================
+        
+        const SUPABASE_URL = 'https://momcakikuivtvxkmgjhx.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_ept_0dlTFn9cWLM0wIK2JA_a7xNSx-I';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ============================================
         // СОСТОЯНИЕ ПРИЛОЖЕНИЯ
         // ============================================
         
@@ -1185,8 +1195,6 @@
         let parsedLyrics = [];
         let currentLyricIndex = -1;
         
-        let playCounts = {};
-        const STATS_KEY = 'fn_play_stats';
         let trackCounted = false;
         
         let fsLyricsOpen = false;
@@ -1241,7 +1249,6 @@
         // ИНИЦИАЛИЗАЦИЯ
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
-            loadStats();
             renderHome();
             initStaggerAnimation();
             setupAudioEvents();
@@ -1648,51 +1655,70 @@
         }
 
         // ============================================
-        // СТАТИСТИКА
+        // СТАТИСТИКА (SUPABASE)
         // ============================================
         
-        function loadStats() { 
-            const saved = localStorage.getItem(STATS_KEY); 
-            if (saved) playCounts = JSON.parse(saved); 
-        }
-        
-        function saveStats() { 
-            localStorage.setItem(STATS_KEY, JSON.stringify(playCounts)); 
-        }
-        
-        function incrementPlayCount() {
+        async function incrementPlayCount() {
             if (!currentReleaseId) return;
             const key = `${currentReleaseId}-${currentTrackIndex}`;
-            if (!playCounts[key]) playCounts[key] = 0;
-            playCounts[key]++;
-            saveStats();
+            
+            try {
+                // Вызываем функцию increment_play_count на Supabase
+                const { error } = await supabaseClient.rpc('increment_play_count', { 
+                    track_key_input: key 
+                });
+                
+                if (error) {
+                    console.error('Ошибка обновления статистики:', error);
+                }
+            } catch (err) {
+                console.error('Ошибка соединения:', err);
+            }
         }
 
         // ============================================
-        // СТРАНИЦА ЧАРТА
+        // СТРАНИЦА ЧАРТА (SUPABASE)
         // ============================================
         
-        function renderChart() {
+        async function renderChart() {
             const chartList = document.getElementById('chart-list');
             if (!chartList) return;
             
+            // 1. Запрашиваем данные из Supabase
+            const { data, error } = await supabaseClient
+                .from('play_counts')
+                .select('track_key, plays')
+                .order('plays', { ascending: false })
+                .limit(50);
+
+            if (error) {
+                console.error('Ошибка загрузки чарта:', error);
+                chartList.innerHTML = '<p class="text-center text-[var(--fg-muted)] mt-10">Ошибка загрузки данных.</p>';
+                return;
+            }
+            
+            // 2. Собираем данные для отображения
             let allTracks = [];
             
-            Object.entries(releases).forEach(([releaseId, release]) => {
-                release.tracks.forEach((track, index) => {
+            data.forEach(item => {
+                const parts = item.track_key.split('-');
+                const releaseId = parts.slice(0, -1).join('-');
+                const trackIndex = parseInt(parts[parts.length - 1]);
+                const release = releases[releaseId];
+                
+                if (release && release.tracks[trackIndex]) {
+                    const track = release.tracks[trackIndex];
                     allTracks.push({
-                        id: `${releaseId}-${index}`, 
-                        title: track.title, 
+                        title: track.title,
                         cover: release.cover,
-                        plays: playCounts[`${releaseId}-${index}`] || 0, 
-                        releaseId, 
-                        trackIndex: index
+                        plays: item.plays,
+                        releaseId: releaseId,
+                        trackIndex: trackIndex
                     });
-                });
+                }
             });
-
-            allTracks.sort((a, b) => b.plays - a.plays);
-
+            
+            // 3. Рендерим список
             let html = '';
             allTracks.forEach((item, index) => {
                 const positionClass = index < 3 ? `top-${index + 1}` : '';
@@ -1940,4 +1966,3 @@
     </script>
 </body>
 </html>
-
