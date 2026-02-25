@@ -391,8 +391,10 @@
         }
         
         .fs-controls-inner {
-            display: flex; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: flex-start;
             gap: 20px;
+            /* Смещаем кнопки вправо для центрирования Play/Pause под обложкой */
+            padding-left: 385px;
         }
         
         /* Кнопки в полноэкранном режиме */
@@ -779,7 +781,14 @@
             
             .fs-controls { padding: 20px 20px 36px; }
             .fs-progress-container { height: 6px; margin-bottom: 20px; }
-            .fs-controls-inner { gap: 16px; flex-wrap: nowrap; }
+            
+            /* Кнопки под прогресс-баром - смещение для мобильных */
+            .fs-controls-inner { 
+                gap: 16px; 
+                flex-wrap: nowrap;
+                padding-left: 18px;
+            }
+            
             .fs-btn svg { width: 22px; height: 22px; }
             
             .fs-play-btn {
@@ -808,7 +817,7 @@
             #player-track { font-size: 12px; max-width: 90px; }
             .fs-cover { width: 200px; height: 200px; }
             .fs-track-title { font-size: 15px; }
-            .fs-controls-inner { gap: 12px; }
+            .fs-controls-inner { gap: 12px; padding-left: 14px; }
             .fs-play-btn { width: 46px; height: 46px; }
             .fs-time { min-width: 60px; font-size: 10px; }
         }
@@ -1515,7 +1524,6 @@
             if (fsBg) fsBg.style.backgroundImage = `url(${coverSrc})`;
             if (fsLyricsTitle) fsLyricsTitle.textContent = trackTitle;
             
-            // Анимация перелистывания обложек
             animateCoverTransition(coverSrc, direction);
         }
         
@@ -1523,7 +1531,6 @@
             const activeSlot = currentCoverSlot === 'a' ? fsCoverA : fsCoverB;
             const inactiveSlot = currentCoverSlot === 'a' ? fsCoverB : fsCoverA;
             
-            // Если анимация уже идет, принудительно завершаем предыдущую
             if (animationInProgress) {
                 activeSlot.classList.remove('enter-left', 'enter-right');
                 activeSlot.classList.add('active');
@@ -1532,7 +1539,6 @@
             
             animationInProgress = true;
             
-            // Если direction не задан (первая загрузка) - просто показываем
             if (!direction) {
                 activeSlot.src = coverSrc;
                 activeSlot.classList.add('active');
@@ -1542,10 +1548,8 @@
                 return;
             }
             
-            // Устанавливаем src для нового слота
             inactiveSlot.src = coverSrc;
             
-            // Определяем классы для анимации
             let exitClass, enterClass;
             if (direction === 'next') {
                 exitClass = 'exit-left';
@@ -1555,37 +1559,28 @@
                 enterClass = 'enter-left';
             }
             
-            // Снимаем playing классы чтобы остановить zoom анимацию
             activeSlot.classList.remove('playing');
             inactiveSlot.classList.remove('playing');
             
-            // Сбрасываем все классы анимации
             activeSlot.classList.remove('exit-left', 'exit-right', 'enter-left', 'enter-right');
             inactiveSlot.classList.remove('active', 'exit-left', 'exit-right', 'enter-left', 'enter-right');
             
-            // Устанавливаем начальную позицию для входящего слота (скрыт за краем)
             inactiveSlot.classList.add(enterClass);
             
-            // Force reflow с двойным requestAnimationFrame для надежности
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    // Запускаем анимацию выхода для текущего
                     activeSlot.classList.remove('active');
                     activeSlot.classList.add(exitClass);
                     
-                    // Запускаем анимацию входа для нового
                     inactiveSlot.classList.remove(enterClass);
                     inactiveSlot.classList.add('active');
                     
-                    // Переключаем активный слот
                     currentCoverSlot = currentCoverSlot === 'a' ? 'b' : 'a';
                     
-                    // Добавляем playing класс если трек играет
                     if (isPlaying) {
                         inactiveSlot.classList.add('playing');
                     }
                     
-                    // Сбрасываем флаг после завершения анимации
                     setTimeout(() => {
                         animationInProgress = false;
                         activeSlot.classList.remove(exitClass);
@@ -1599,7 +1594,6 @@
             if (fsIconPause) fsIconPause.style.display = isPlaying ? 'block' : 'none';
             if (fsPlayBtn) fsPlayBtn.classList.toggle('playing', isPlaying);
             
-            // Управление zoom анимацией обложки
             const activeCover = currentCoverSlot === 'a' ? fsCoverA : fsCoverB;
             const inactiveCover = currentCoverSlot === 'a' ? fsCoverB : fsCoverA;
             
